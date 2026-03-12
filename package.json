@@ -1,0 +1,30 @@
+{
+  "name": "system-tournament-ar",
+  "version": "1.0.0",
+  "description": "Professional 2v2 Tournament Management System with Neon Design",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "deploy": "bash deploy.sh",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "tournament",
+    "esports",
+    "arabic",
+    "neon",
+    "2v2",
+    "bracket",
+    "wheel",
+    "games"
+  ],
+  "author": "Fronre",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fronre/system-tournament-ar.git"
+  },
+  "homepage": "https://fronre.github.io/system-tournament-ar/",
+  "devDependencies": {},
+  "dependencies": {}
+}
