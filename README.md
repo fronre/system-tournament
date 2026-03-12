@@ -44,7 +44,7 @@
 ## 🌐 المعاينة المباشرة
 
 يمكنك مشاهدة النسخة العاملة هنا:
-https://fronre.github.io/system-tournament-ar/
+https://fronre.github.io/esports-bracket-ar/
 
 ## 📱 التوافق
 

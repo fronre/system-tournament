@@ -1,5 +1,5 @@
 {
-  "name": "system-tournament-ar",
+  "name": "esports-bracket-ar",
   "version": "1.0.0",
   "description": "Professional 2v2 Tournament Management System with Neon Design",
   "main": "index.html",
@@ -22,9 +22,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fronre/system-tournament-ar.git"
+    "url": "https://github.com/fronre/esports-bracket-ar.git"
   },
-  "homepage": "https://fronre.github.io/system-tournament-ar/",
+  "homepage": "https://fronre.github.io/esports-bracket-ar/",
   "devDependencies": {},
   "dependencies": {}
 }

@@ -22,4 +22,4 @@ echo "🌐 Pushing to GitHub..."
 git push origin gh-pages
 
 echo "✅ Deployment complete!"
-echo "🌍 Your site will be live at: https://fronre.github.io/system-tournament-ar/"
+echo "🌍 Your site will be live at: https://fronre.github.io/esports-bracket-ar/"
