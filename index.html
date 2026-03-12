@@ -1,0 +1,1164 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطولة 2 ضد 2 - نظام القرعة الاحترافي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --neon-cyan: #00ffff;
+            --neon-purple: #ff00ff;
+            --neon-pink: #ff006e;
+            --neon-green: #00ff88;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --shadow-neon: 0 0 20px rgba(0, 255, 255, 0.5);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-secondary), var(--bg-card));
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--neon-cyan);
+            box-shadow: var(--shadow-neon);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            animation: slideHeader 3s infinite;
+        }
+
+        @keyframes slideHeader {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+            animation: pulse 2s infinite;
+            border: 2px solid var(--neon-cyan);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.2); }
+        }
+
+        /* Main Layout */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+            animation: slideTop 3s linear infinite;
+        }
+
+        @keyframes slideTop {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
+            border-color: var(--neon-cyan);
+        }
+
+        .card h2 {
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Players Section */
+        .player-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            border: none;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .players-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .player-chip {
+            background: linear-gradient(45deg, var(--bg-secondary), var(--bg-card));
+            border: 1px solid var(--neon-cyan);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .player-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .remove-player {
+            background: var(--neon-pink);
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .remove-player:hover {
+            background: #ff0044;
+            transform: rotate(90deg);
+        }
+
+        /* Wheel Section */
+        .wheel-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #wheelCanvas {
+            border: 3px solid var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+            background: var(--bg-primary);
+        }
+
+        .wheel-pointer {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid var(--neon-pink);
+            position: relative;
+            top: -20px;
+            filter: drop-shadow(0 0 10px var(--neon-pink));
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .spin-button {
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan));
+            padding: 15px 40px;
+            font-size: 18px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+        }
+
+        .spin-button:hover {
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+        }
+
+        .spin-button:disabled {
+            background: #444;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        /* Matches Section */
+        .matches-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .match-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border: 1px solid var(--neon-purple);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            animation: slideIn 0.5s ease;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .match-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.4);
+            border-color: var(--neon-purple);
+        }
+
+        .teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .team {
+            background: var(--bg-primary);
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--neon-cyan);
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .vs {
+            color: var(--neon-pink);
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* Tournament Bracket */
+        .tournament-bracket {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .bracket-title {
+            color: var(--neon-green);
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .bracket-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            justify-items: center;
+        }
+
+        .bracket-round {
+            text-align: center;
+        }
+
+        .round-title {
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .bracket-match {
+            background: var(--bg-secondary);
+            border: 1px solid var(--neon-purple);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .bracket-match:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .match-header {
+            color: var(--neon-cyan);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .match-teams {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .bracket-team {
+            background: var(--bg-primary);
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--neon-cyan);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .team-color {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .bracket-vs {
+            color: var(--neon-pink);
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+
+        .winner-btn {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .winner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.6);
+        }
+
+        .champion-btn {
+            background: linear-gradient(45deg, #FFD700, #FFA500) !important;
+            font-size: 14px;
+            padding: 12px;
+            animation: championGlow 2s ease-in-out infinite alternate;
+        }
+
+        .winner-placeholder {
+            color: var(--text-secondary);
+            font-style: italic;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Winner Animations */
+        @keyframes winnerPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes championBounce {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        @keyframes championGlow {
+            0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+            100% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.9); }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-purple);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            main {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .bracket-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            #wheelCanvas {
+                width: 250px !important;
+                height: 250px !important;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--neon-cyan);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="src/1.jpg" class="logo" alt="Tournament Logo 1">
+            <h1>بطولة 2 ضد 2</h1>
+            <img src="src/2.jpg" class="logo" alt="Tournament Logo 2">
+        </div>
+    </header>
+
+    <main>
+        <!-- Players Section -->
+        <section class="card">
+            <h2>قسم اللاعبين</h2>
+            <div class="player-input">
+                <input type="text" id="playerName" placeholder="أدخل اسم اللاعب" maxlength="20">
+                <button onclick="addPlayer()">إضافة</button>
+            </div>
+            <div class="players-list" id="playersList"></div>
+        </section>
+
+        <!-- Wheel Section -->
+        <section class="card">
+            <h2>عجلة القرعة</h2>
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                <button class="spin-button" id="spinButton" onclick="spinWheel()">دور العجلة</button>
+            </div>
+        </section>
+
+        <!-- Matches Section -->
+        <section class="card">
+            <h2>قسم المباريات</h2>
+            <div class="matches-list" id="matchesList"></div>
+        </section>
+    </main>
+
+    <!-- Tournament Bracket -->
+    <div class="tournament-bracket" id="tournamentBracket" style="display: none;">
+        <h2 class="bracket-title">🏆 شجرة البطولة 🏆</h2>
+        <div class="bracket-container" id="bracketContainer"></div>
+    </div>
+
+    <script>
+        // Global Variables
+        let players = [];
+        let availablePlayers = [];
+        let selectedPlayers = [];
+        let matches = [];
+        let tournamentWinners = {
+            quarterFinals: [],
+            semiFinals: [],
+            final: null
+        };
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            drawWheel();
+            document.getElementById('playerName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addPlayer();
+                }
+            });
+        });
+
+        // Player Management
+        function addPlayer() {
+            const input = document.getElementById('playerName');
+            const name = input.value.trim();
+            
+            if (name === '') {
+                showMessage('الرجاء إدخال اسم اللاعب', 'error');
+                return;
+            }
+            
+            if (players.some(p => p.name === name)) {
+                showMessage('اللاعب موجود بالفعل', 'error');
+                return;
+            }
+            
+            if (players.length >= 32) {
+                showMessage('تم الوصول للحد الأقصى من اللاعبين', 'error');
+                return;
+            }
+            
+            const player = {
+                id: Date.now(),
+                name: name,
+                color: getRandomColor()
+            };
+            
+            players.push(player);
+            availablePlayers.push(player);
+            input.value = '';
+            updatePlayersList();
+            drawWheel();
+            showMessage(`تم إضافة ${name} بنجاح`, 'success');
+        }
+
+        function removePlayer(playerId) {
+            const player = players.find(p => p.id === playerId);
+            players = players.filter(p => p.id !== playerId);
+            availablePlayers = availablePlayers.filter(p => p.id !== playerId);
+            updatePlayersList();
+            drawWheel();
+            showMessage(`تم حذف ${player.name}`, 'info');
+        }
+
+        function updatePlayersList() {
+            const container = document.getElementById('playersList');
+            container.innerHTML = '';
+            
+            players.forEach(player => {
+                const chip = document.createElement('div');
+                chip.className = 'player-chip';
+                chip.innerHTML = `
+                    <span style="color: ${player.color}">●</span>
+                    <span>${player.name}</span>
+                    <button class="remove-player" onclick="removePlayer(${player.id})">×</button>
+                `;
+                container.appendChild(chip);
+            });
+        }
+
+        // Wheel Functions
+        function drawWheel() {
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 120;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (availablePlayers.length === 0) {
+                ctx.fillStyle = '#666';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('أضف لاعبين للبدء', centerX, centerY);
+                return;
+            }
+            
+            const anglePerPlayer = (2 * Math.PI) / availablePlayers.length;
+            
+            availablePlayers.forEach((player, index) => {
+                const startAngle = index * anglePerPlayer + currentRotation;
+                const endAngle = startAngle + anglePerPlayer;
+                
+                // Draw segment
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = player.color;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + anglePerPlayer / 2);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText(player.name, radius / 2, 0);
+                ctx.restore();
+            });
+            
+            // Draw center circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning || availablePlayers.length === 0) return;
+            
+            isSpinning = true;
+            document.getElementById('spinButton').disabled = true;
+            
+            const spinDuration = 3000 + Math.random() * 2000;
+            const spinRotations = 5 + Math.random() * 5;
+            const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
+            
+            const startTime = Date.now();
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                
+                // Easing function for realistic deceleration
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
+                
+                drawWheel();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    isSpinning = false;
+                    document.getElementById('spinButton').disabled = false;
+                    selectWinner();
+                }
+            }
+            
+            animate();
+        }
+
+        function selectWinner() {
+            if (availablePlayers.length === 0) return;
+            
+            // More accurate winner selection based on pointer position
+            const anglePerPlayer = (2 * Math.PI) / availablePlayers.length;
+            const normalizedRotation = currentRotation % (2 * Math.PI);
+            const adjustedRotation = (2 * Math.PI - normalizedRotation + Math.PI / 2) % (2 * Math.PI);
+            const winnerIndex = Math.floor(adjustedRotation / anglePerPlayer) % availablePlayers.length;
+            
+            const winner = availablePlayers[winnerIndex];
+            availablePlayers.splice(winnerIndex, 1);
+            selectedPlayers.push(winner);
+            
+            // Add visual effect for selected player
+            animateWinnerSelection(winner.name);
+            
+            showMessage(`تم اختيار ${winner.name}!`, 'success');
+            
+            // Check if we can create matches (every 4 players = 1 match)
+            if (selectedPlayers.length % 4 === 0 && selectedPlayers.length >= 4) {
+                createMatchFromSelected();
+            }
+            
+            drawWheel();
+        }
+
+        function createMatchFromSelected() {
+            if (selectedPlayers.length < 4) return;
+            
+            const team1Player1 = selectedPlayers[selectedPlayers.length - 4];
+            const team1Player2 = selectedPlayers[selectedPlayers.length - 3];
+            const team2Player1 = selectedPlayers[selectedPlayers.length - 2];
+            const team2Player2 = selectedPlayers[selectedPlayers.length - 1];
+            
+            const match = {
+                id: Date.now(),
+                team1: [team1Player1, team1Player2],
+                team2: [team2Player1, team2Player2],
+                winner: null,
+                round: 'quarterFinal'
+            };
+            
+            matches.push(match);
+            updateMatchesList();
+            
+            // Check if we should create tournament bracket
+            if (matches.length === 8) {
+                createTournamentBracket();
+            }
+        }
+
+        function updateMatchesList() {
+            const container = document.getElementById('matchesList');
+            container.innerHTML = '';
+            
+            matches.forEach(match => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+                matchCard.innerHTML = `
+                    <div class="teams">
+                        <div class="team">
+                            <div>${match.team1[0].name}</div>
+                            <div>${match.team1[1].name}</div>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team">
+                            <div>${match.team2[0].name}</div>
+                            <div>${match.team2[1].name}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(matchCard);
+            });
+        }
+
+        function createTournamentBracket() {
+            const bracket = document.getElementById('tournamentBracket');
+            const container = document.getElementById('bracketContainer');
+            
+            bracket.style.display = 'block';
+            container.innerHTML = '';
+            
+            // Quarter Finals
+            const quarterFinals = document.createElement('div');
+            quarterFinals.className = 'bracket-round';
+            quarterFinals.innerHTML = '<h3 class="round-title">الدور الأول</h3>';
+            
+            for (let i = 0; i < 4; i++) {
+                const matchDiv = document.createElement('div');
+                matchDiv.className = 'bracket-match';
+                matchDiv.innerHTML = `
+                    <div class="match-header">المباراة ${i + 1}</div>
+                    <div class="match-teams">
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${matches[i].team1[0].color}">●</span>
+                            ${matches[i].team1[0].name} + ${matches[i].team1[1].name}
+                        </div>
+                        <div class="bracket-vs">VS</div>
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${matches[i].team2[0].color}">●</span>
+                            ${matches[i].team2[0].name} + ${matches[i].team2[1].name}
+                        </div>
+                    </div>
+                    <button class="winner-btn" onclick="setQuarterFinalWinner(${i}, 1)" style="background: ${matches[i].team1[0].color}">
+                        فريق 1 يفوز
+                    </button>
+                    <button class="winner-btn" onclick="setQuarterFinalWinner(${i}, 2)" style="background: ${matches[i].team2[0].color}">
+                        فريق 2 يفوز
+                    </button>
+                `;
+                quarterFinals.appendChild(matchDiv);
+            }
+            
+            // Semi Finals
+            const semiFinals = document.createElement('div');
+            semiFinals.className = 'bracket-round';
+            semiFinals.innerHTML = '<h3 class="round-title">نصف النهائي</h3>';
+            
+            for (let i = 0; i < 2; i++) {
+                const matchDiv = document.createElement('div');
+                matchDiv.className = 'bracket-match semi-final-placeholder';
+                matchDiv.id = `semi-final-${i}`;
+                matchDiv.innerHTML = `
+                    <div class="match-header">نصف النهائي ${i + 1}</div>
+                    <div class="winner-placeholder">في انتظار الفائزين...</div>
+                `;
+                semiFinals.appendChild(matchDiv);
+            }
+            
+            // Final
+            const final = document.createElement('div');
+            final.className = 'bracket-round';
+            final.innerHTML = '<h3 class="round-title">النهائي</h3>';
+            
+            const finalMatch = document.createElement('div');
+            finalMatch.className = 'bracket-match final-placeholder';
+            finalMatch.id = 'final-match';
+            finalMatch.innerHTML = `
+                <div class="match-header">🏆 المباراة النهائية 🏆</div>
+                <div class="winner-placeholder">في انتظار الفائزين...</div>
+            `;
+            final.appendChild(finalMatch);
+            
+            container.appendChild(quarterFinals);
+            container.appendChild(semiFinals);
+            container.appendChild(final);
+            
+            showMessage('تم إنشاء شجرة البطولة! اختر الفائزين في الدور الأول', 'success');
+        }
+
+        // Utility Functions
+        function getRandomColor() {
+            const colors = [
+                '#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF',
+                '#06FFB4', '#FF4365', '#00D9FF', '#FFD23F', '#FF1B6B'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function animateWinnerSelection(playerName) {
+            // Create floating winner animation
+            const winnerDiv = document.createElement('div');
+            winnerDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 3rem;
+                font-weight: bold;
+                color: #00FF88;
+                text-shadow: 0 0 30px #00FF88;
+                z-index: 2000;
+                animation: winnerPop 2s ease-out forwards;
+                pointer-events: none;
+            `;
+            winnerDiv.textContent = playerName;
+            document.body.appendChild(winnerDiv);
+            
+            setTimeout(() => winnerDiv.remove(), 2000);
+        }
+
+        function setQuarterFinalWinner(matchIndex, teamNumber) {
+            const match = matches[matchIndex];
+            const winner = teamNumber === 1 ? match.team1 : match.team2;
+            match.winner = winner;
+            tournamentWinners.quarterFinals.push(winner);
+            
+            // Update semi finals
+            updateSemiFinals();
+            
+            // Animate winner
+            animateWinnerSelection(`فريق ${teamNumber} يفوز!`);
+            showMessage(`تم تحديد الفائز في المباراة ${matchIndex + 1}`, 'success');
+        }
+
+        function updateSemiFinals() {
+            if (tournamentWinners.quarterFinals.length === 4) {
+                // Update semi final 1
+                const semi1 = document.getElementById('semi-final-0');
+                semi1.innerHTML = `
+                    <div class="match-header">نصف النهائي 1</div>
+                    <div class="match-teams">
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[0][0].color}">●</span>
+                            ${tournamentWinners.quarterFinals[0][0].name} + ${tournamentWinners.quarterFinals[0][1].name}
+                        </div>
+                        <div class="bracket-vs">VS</div>
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[1][0].color}">●</span>
+                            ${tournamentWinners.quarterFinals[1][0].name} + ${tournamentWinners.quarterFinals[1][1].name}
+                        </div>
+                    </div>
+                    <button class="winner-btn" onclick="setSemiFinalWinner(0, 1)" style="background: ${tournamentWinners.quarterFinals[0][0].color}">
+                        فريق 1 يفوز
+                    </button>
+                    <button class="winner-btn" onclick="setSemiFinalWinner(0, 2)" style="background: ${tournamentWinners.quarterFinals[1][0].color}">
+                        فريق 2 يفوز
+                    </button>
+                `;
+                
+                // Update semi final 2
+                const semi2 = document.getElementById('semi-final-1');
+                semi2.innerHTML = `
+                    <div class="match-header">نصف النهائي 2</div>
+                    <div class="match-teams">
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[2][0].color}">●</span>
+                            ${tournamentWinners.quarterFinals[2][0].name} + ${tournamentWinners.quarterFinals[2][1].name}
+                        </div>
+                        <div class="bracket-vs">VS</div>
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[3][0].color}">●</span>
+                            ${tournamentWinners.quarterFinals[3][0].name} + ${tournamentWinners.quarterFinals[3][1].name}
+                        </div>
+                    </div>
+                    <button class="winner-btn" onclick="setSemiFinalWinner(1, 1)" style="background: ${tournamentWinners.quarterFinals[2][0].color}">
+                        فريق 1 يفوز
+                    </button>
+                    <button class="winner-btn" onclick="setSemiFinalWinner(1, 2)" style="background: ${tournamentWinners.quarterFinals[3][0].color}">
+                        فريق 2 يفوز
+                    </button>
+                `;
+            }
+        }
+
+        function setSemiFinalWinner(semiIndex, teamNumber) {
+            const winnerIndex = semiIndex === 0 ? (teamNumber === 1 ? 0 : 1) : (teamNumber === 1 ? 2 : 3);
+            const winner = tournamentWinners.quarterFinals[winnerIndex];
+            tournamentWinners.semiFinals.push(winner);
+            
+            // Update final
+            updateFinal();
+            
+            animateWinnerSelection(`الفائز نصف النهائي ${semiIndex + 1}!`);
+            showMessage(`تم تحديد الفائز في نصف النهائي ${semiIndex + 1}`, 'success');
+        }
+
+        function updateFinal() {
+            if (tournamentWinners.semiFinals.length === 2) {
+                const final = document.getElementById('final-match');
+                final.innerHTML = `
+                    <div class="match-header">🏆 المباراة النهائية 🏆</div>
+                    <div class="match-teams">
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[0][0].color}">●</span>
+                            ${tournamentWinners.semiFinals[0][0].name} + ${tournamentWinners.semiFinals[0][1].name}
+                        </div>
+                        <div class="bracket-vs">VS</div>
+                        <div class="bracket-team">
+                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[1][0].color}">●</span>
+                            ${tournamentWinners.semiFinals[1][0].name} + ${tournamentWinners.semiFinals[1][1].name}
+                        </div>
+                    </div>
+                    <button class="winner-btn champion-btn" onclick="setChampion(1)" style="background: ${tournamentWinners.semiFinals[0][0].color}">
+                        🏆 فريق 1 يفوز 🏆
+                    </button>
+                    <button class="winner-btn champion-btn" onclick="setChampion(2)" style="background: ${tournamentWinners.semiFinals[1][0].color}">
+                        🏆 فريق 2 يفوز 🏆
+                    </button>
+                `;
+            }
+        }
+
+        function setChampion(teamNumber) {
+            const champion = teamNumber === 1 ? tournamentWinners.semiFinals[0] : tournamentWinners.semiFinals[1];
+            tournamentWinners.final = champion;
+            
+            // Show champion celebration
+            showChampionCelebration(champion);
+            showMessage('🏆 تم تحديد بطل البطولة! 🏆', 'success');
+        }
+
+        function showChampionCelebration(champion) {
+            const celebration = document.createElement('div');
+            celebration.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 3000;
+                animation: fadeIn 0.5s ease;
+            `;
+            
+            celebration.innerHTML = `
+                <div style="text-align: center; animation: championBounce 1s ease infinite alternate;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🏆</div>
+                    <h1 style="color: #FFD700; font-size: 3rem; text-shadow: 0 0 30px #FFD700; margin: 0;">
+                        البطل!
+                    </h1>
+                    <div style="color: #fff; font-size: 2rem; margin-top: 20px;">
+                        <span style="color: ${champion[0].color}">●</span>
+                        ${champion[0].name} + ${champion[1].name}
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        margin-top: 30px;
+                        padding: 15px 30px;
+                        font-size: 1.2rem;
+                        background: linear-gradient(45deg, #FFD700, #FFA500);
+                        border: none;
+                        border-radius: 10px;
+                        color: #000;
+                        font-weight: bold;
+                        cursor: pointer;
+                    ">
+                        إغلاق
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(celebration);
+        }
+
+        function showMessage(message, type) {
+            // Create a simple toast notification
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                background: ${type === 'error' ? '#FF006E' : type === 'success' ? '#00FF88' : '#00D9FF'};
+                color: #000;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 1000;
+                animation: slideDown 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideDown {
+                from { transform: translate(-50%, -100%); opacity: 0; }
+                to { transform: translate(-50%, 0); opacity: 1; }
+            }
+            @keyframes slideUp {
+                from { transform: translate(-50%, 0); opacity: 1; }
+                to { transform: translate(-50%, -100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
