@@ -1137,6 +1137,10 @@
                     createMatchFromSelected();
                 }
                 
+                // Update status after selection
+                checkTournamentReadiness();
+                updatePlayersList();
+                
                 drawWheel();
             }, 1000); // 1 second delay to show selection
         }
