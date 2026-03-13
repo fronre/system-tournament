@@ -1004,8 +1004,8 @@
             // Add spinning animation to container
             document.querySelector('.wheel-container').classList.add('spinning');
             
-            // Exactly 5 rotations with direct result
-            const spinDuration = 3000; // Fixed 3 seconds
+            // Exactly 5 rotations with clear visibility
+            const spinDuration = 5000; // 5 seconds for clearer view
             const spinRotations = 5; // Exactly 5 rotations
             const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
             
@@ -1013,15 +1013,15 @@
             
             // Add visual feedback
             const button = document.getElementById('spinButton');
-            button.textContent = '� جاري الدوران (5 مرات)...';
+            button.textContent = '🎯 دوران 5 مرات أمامك...';
             button.style.background = 'linear-gradient(45deg, #FFD700, #FFA500)';
             
             function animate() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / spinDuration, 1);
                 
-                // Simple linear easing for direct motion
-                const easeOut = progress; // Linear - no fancy easing
+                // Smooth linear motion for clear visibility
+                const easeOut = progress;
                 currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
                 
                 drawWheel();
