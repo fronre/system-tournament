@@ -330,13 +330,12 @@
 
         /* Spinning animation for the wheel container */
         .wheel-container.spinning {
-            animation: containerShake 0.2s ease-in-out infinite;
+            animation: containerGentle 0.5s ease-in-out infinite;
         }
 
-        @keyframes containerShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
+        @keyframes containerGentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
         /* Matches Section */
@@ -978,24 +977,24 @@
             // Add spinning animation to container
             document.querySelector('.wheel-container').classList.add('spinning');
             
-            // Very powerful and energetic spin
-            const spinDuration = 6000 + Math.random() * 3000; // 6-9 seconds
-            const spinRotations = 15 + Math.random() * 10; // 15-25 full rotations (very powerful!)
+            // Natural slow spinning with many continuous rotations
+            const spinDuration = 12000 + Math.random() * 6000; // 12-18 seconds (very slow)
+            const spinRotations = 20 + Math.random() * 15; // 20-35 full rotations (many!)
             const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
             
             const startTime = Date.now();
             
             // Add visual feedback
             const button = document.getElementById('spinButton');
-            button.textContent = '⚡ جاري الدوران القوي...';
-            button.style.background = 'linear-gradient(45deg, #FF006E, #8338EC, #3A86FF)';
+            button.textContent = '🌀 جاري الدوران الطبيعي...';
+            button.style.background = 'linear-gradient(45deg, #06FFB4, #3A86FF)';
             
             function animate() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / spinDuration, 1);
                 
-                // Powerful easing with dramatic start and end
-                const easeOut = 1 - Math.pow(1 - progress, 5); // Quintic easing (very dramatic)
+                // Natural easing - very gentle deceleration
+                const easeOut = 1 - Math.pow(1 - progress, 2); // Quadratic easing (natural)
                 currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
                 
                 drawWheel();
