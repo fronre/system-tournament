@@ -733,7 +733,6 @@
                 const startAngle = index * anglePerPlayer + currentRotation;
                 const endAngle = startAngle + anglePerPlayer;
                 
-                // Draw segment
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -744,7 +743,6 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
                 
-                // Draw text
                 ctx.save();
                 ctx.translate(centerX, centerY);
                 ctx.rotate(startAngle + anglePerPlayer / 2);
@@ -755,14 +753,37 @@
                 ctx.restore();
             });
             
-            // Draw center circle
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
             ctx.fillStyle = '#fff';
             ctx.fill();
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
             ctx.stroke();
+            
+            // Draw selection indicator line at top (where pointer points)
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - radius);
+            ctx.lineTo(centerX, centerY - radius - 10);
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            
+            // Highlight the segment at the pointer position
+            if (availablePlayers.length > 0) {
+                const normalizedRotation = currentRotation % (2 * Math.PI);
+                const topSegmentIndex = Math.floor(((2 * Math.PI - normalizedRotation) % (2 * Math.PI)) / anglePerPlayer) % availablePlayers.length;
+                
+                // Highlight the selected segment
+                const startAngle = topSegmentIndex * anglePerPlayer + currentRotation;
+                const endAngle = startAngle + anglePerPlayer;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius + 5, startAngle, endAngle);
+                ctx.closePath();
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
         }
 
         function spinWheel() {
@@ -802,23 +823,24 @@
         function selectWinner() {
             if (availablePlayers.length === 0) return;
             
-            // Accurate selection: The pointer is at the TOP (12 o'clock position)
-            // So we need to find which segment is at the top when wheel stops
+            // The pointer is at the TOP (12 o'clock position = angle 0)
+            // We need to find which segment is currently at the top
             const anglePerPlayer = (2 * Math.PI) / availablePlayers.length;
             
-            // Current rotation angle (how much the wheel has turned)
+            // Get the current rotation of the wheel
             const normalizedRotation = currentRotation % (2 * Math.PI);
             
-            // Since the pointer is at the top, we need to find which segment
-            // is currently at the top position
-            // The wheel rotates clockwise, so we calculate from the top
-            const topPositionAngle = (2 * Math.PI - normalizedRotation + Math.PI / 2) % (2 * Math.PI);
+            // Since the wheel rotates clockwise, and we want the segment at the top
+            // The top position corresponds to angle 0 (or 2π)
+            // We need to find which segment's center is closest to the top
             
-            // Find which player is at the top
-            const winnerIndex = Math.floor(topPositionAngle / anglePerPlayer) % availablePlayers.length;
+            // Calculate which segment is at the top position
+            // The wheel starts with first player at angle 0 (top)
+            // As it rotates clockwise, the segment at top changes
+            const topSegmentIndex = Math.floor(((2 * Math.PI - normalizedRotation) % (2 * Math.PI)) / anglePerPlayer) % availablePlayers.length;
             
-            const winner = availablePlayers[winnerIndex];
-            availablePlayers.splice(winnerIndex, 1);
+            const winner = availablePlayers[topSegmentIndex];
+            availablePlayers.splice(topSegmentIndex, 1);
             selectedPlayers.push(winner);
             
             // Add visual effect for selected player
