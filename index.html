@@ -266,10 +266,10 @@
             border-radius: 50%;
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
             background: var(--bg-primary);
-            max-width: 350px;
-            max-height: 350px;
-            width: 350px;
-            height: 350px;
+            max-width: 450px;
+            max-height: 450px;
+            width: 450px;
+            height: 450px;
         }
 
         .wheel-pointer {
@@ -630,8 +630,8 @@
             }
 
             #wheelCanvas {
-                width: 300px !important;
-                height: 300px !important;
+                width: 350px !important;
+                height: 350px !important;
             }
 
             .players-list {
@@ -674,8 +674,8 @@
             }
 
             #wheelCanvas {
-                width: 250px !important;
-                height: 250px !important;
+                width: 300px !important;
+                height: 300px !important;
             }
 
             .spin-button {
@@ -733,7 +733,7 @@
             <h2>عجلة القرعة</h2>
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <canvas id="wheelCanvas" width="350" height="350"></canvas>
+                <canvas id="wheelCanvas" width="450" height="450"></canvas>
                 <button class="spin-button" id="spinButton" onclick="spinWheel()">دور العجلة</button>
             </div>
         </section>
@@ -978,24 +978,24 @@
             // Add spinning animation to container
             document.querySelector('.wheel-container').classList.add('spinning');
             
-            // Slow and deliberate spin
-            const spinDuration = 8000 + Math.random() * 4000; // 8-12 seconds (slow)
-            const spinRotations = 5 + Math.random() * 3; // 5-8 full rotations (moderate)
+            // Very powerful and energetic spin
+            const spinDuration = 6000 + Math.random() * 3000; // 6-9 seconds
+            const spinRotations = 15 + Math.random() * 10; // 15-25 full rotations (very powerful!)
             const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
             
             const startTime = Date.now();
             
             // Add visual feedback
             const button = document.getElementById('spinButton');
-            button.textContent = '🌀 جاري الدوران...';
-            button.style.background = 'linear-gradient(45deg, #FF006E, #8338EC)';
+            button.textContent = '⚡ جاري الدوران القوي...';
+            button.style.background = 'linear-gradient(45deg, #FF006E, #8338EC, #3A86FF)';
             
             function animate() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / spinDuration, 1);
                 
-                // Gentle easing for slow, smooth spin
-                const easeOut = 1 - Math.pow(1 - progress, 3); // Cubic easing (gentle)
+                // Powerful easing with dramatic start and end
+                const easeOut = 1 - Math.pow(1 - progress, 5); // Quintic easing (very dramatic)
                 currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
                 
                 drawWheel();
