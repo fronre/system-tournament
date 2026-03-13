@@ -270,6 +270,26 @@
             max-height: 450px;
             width: 450px;
             height: 450px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .wheel-container.spinning #wheelCanvas {
+            transform: scale(1.1);
+            box-shadow: 0 0 80px rgba(0, 255, 255, 0.8);
+            border-color: #FFD700;
+            animation: wheelGlow 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes wheelGlow {
+            0% { 
+                box-shadow: 0 0 80px rgba(0, 255, 255, 0.8);
+                transform: scale(1.1);
+            }
+            100% { 
+                box-shadow: 0 0 120px rgba(255, 215, 0, 0.9);
+                transform: scale(1.15);
+            }
         }
 
         .wheel-pointer {
@@ -282,7 +302,7 @@
             top: -25px;
             filter: drop-shadow(0 0 15px var(--neon-pink));
             animation: bounce 2s infinite, pointerGlow 1s ease-in-out infinite alternate;
-            z-index: 10;
+            z-index: 101;
         }
 
         /* Add a clear target indicator */
@@ -300,6 +320,18 @@
             animation: pulse 1s infinite;
         }
 
+        .wheel-container.spinning .wheel-pointer {
+            border-top-color: #FFD700;
+            filter: drop-shadow(0 0 30px #FFD700);
+            animation: bounce 0.5s infinite, pointerSpinGlow 0.3s ease-in-out infinite alternate;
+        }
+
+        .wheel-container.spinning .wheel-pointer::before {
+            background: #FFD700;
+            box-shadow: 0 0 30px #FFD700;
+            animation: pulse 0.5s infinite;
+        }
+
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -308,6 +340,11 @@
         @keyframes pointerGlow {
             0% { filter: drop-shadow(0 0 15px var(--neon-pink)); }
             100% { filter: drop-shadow(0 0 30px var(--neon-pink)); }
+        }
+
+        @keyframes pointerSpinGlow {
+            0% { filter: drop-shadow(0 0 30px #FFD700); }
+            100% { filter: drop-shadow(0 0 50px #FFD700); }
         }
 
         .spin-button {
