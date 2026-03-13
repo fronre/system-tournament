@@ -279,7 +279,7 @@
             position: relative;
             top: -25px;
             filter: drop-shadow(0 0 15px var(--neon-pink));
-            animation: bounce 2s infinite;
+            animation: bounce 2s infinite, pointerGlow 1s ease-in-out infinite alternate;
             z-index: 10;
         }
 
@@ -303,21 +303,38 @@
             50% { transform: translateY(-10px); }
         }
 
+        @keyframes pointerGlow {
+            0% { filter: drop-shadow(0 0 15px var(--neon-pink)); }
+            100% { filter: drop-shadow(0 0 30px var(--neon-pink)); }
+        }
+
         .spin-button {
             background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan));
             padding: 15px 40px;
             font-size: 18px;
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            transition: all 0.3s ease;
         }
 
-        .spin-button:hover {
+        .spin-button:hover:not(:disabled) {
             box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+            transform: scale(1.05);
         }
 
         .spin-button:disabled {
-            background: #444;
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 0.8;
+        }
+
+        /* Spinning animation for the wheel container */
+        .wheel-container.spinning {
+            animation: containerShake 0.2s ease-in-out infinite;
+        }
+
+        @keyframes containerShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
         }
 
         /* Matches Section */
@@ -956,19 +973,27 @@
             isSpinning = true;
             document.getElementById('spinButton').disabled = true;
             
-            // Faster and lighter spin
-            const spinDuration = 2000 + Math.random() * 1000; // Reduced from 3000-5000 to 2000-3000
-            const spinRotations = 3 + Math.random() * 3; // Reduced from 5-10 to 3-6
+            // Add spinning animation to container
+            document.querySelector('.wheel-container').classList.add('spinning');
+            
+            // More powerful and longer spin
+            const spinDuration = 4000 + Math.random() * 2000; // 4-6 seconds
+            const spinRotations = 8 + Math.random() * 4; // 8-12 full rotations
             const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
             
             const startTime = Date.now();
+            
+            // Add visual feedback
+            const button = document.getElementById('spinButton');
+            button.textContent = '🌀 جاري الدوران...';
+            button.style.background = 'linear-gradient(45deg, #FF006E, #8338EC)';
             
             function animate() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / spinDuration, 1);
                 
-                // Faster easing function
-                const easeOut = 1 - Math.pow(1 - progress, 2); // Changed from cubic to quadratic
+                // More dramatic easing for powerful spin
+                const easeOut = 1 - Math.pow(1 - progress, 4); // Quartic easing
                 currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
                 
                 drawWheel();
@@ -977,6 +1002,10 @@
                     requestAnimationFrame(animate);
                 } else {
                     isSpinning = false;
+                    // Remove spinning animation
+                    document.querySelector('.wheel-container').classList.remove('spinning');
+                    button.textContent = 'دور العجلة';
+                    button.style.background = '';
                     document.getElementById('spinButton').disabled = false;
                     selectWinner();
                 }
