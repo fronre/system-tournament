@@ -998,6 +998,22 @@
         function spinWheel() {
 
     if (isSpinning || availablePlayers.length === 0) return;
+    
+    // Check player count restrictions
+    if (availablePlayers.length < 16) {
+        showMessage('تحتاج إلى 16 لاعب على الأقل للبدء!', 'error');
+        return;
+    }
+    
+    if (availablePlayers.length > 16 && availablePlayers.length < 32) {
+        showMessage('تحتاج إلى 32 لاعب للبطولة الكاملة!', 'error');
+        return;
+    }
+    
+    if (availablePlayers.length > 32) {
+        showMessage('الحد الأقصى هو 32 لاعب!', 'error');
+        return;
+    }
 
     isSpinning = true;
     document.getElementById('spinButton').disabled = true;
@@ -1013,7 +1029,7 @@
     const startTime = performance.now();
 
     const button = document.getElementById('spinButton');
-    button.textContent = "� العجلة تدور...";
+    button.textContent = "🎡 العجلة تدور...";
     button.style.background = "linear-gradient(45deg,#FFD700,#FFA500)";
 
     function easeOutCubic(t) {
