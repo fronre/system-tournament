@@ -328,16 +328,6 @@
             opacity: 0.8;
         }
 
-        /* Spinning animation for the wheel container */
-        .wheel-container.spinning {
-            animation: containerGentle 0.5s ease-in-out infinite;
-        }
-
-        @keyframes containerGentle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
         /* Matches Section */
         .matches-list {
             display: flex;
@@ -977,24 +967,24 @@
             // Add spinning animation to container
             document.querySelector('.wheel-container').classList.add('spinning');
             
-            // Natural slow spinning with many continuous rotations
-            const spinDuration = 12000 + Math.random() * 6000; // 12-18 seconds (very slow)
-            const spinRotations = 20 + Math.random() * 15; // 20-35 full rotations (many!)
+            // Exactly 5 rotations with direct result
+            const spinDuration = 3000; // Fixed 3 seconds
+            const spinRotations = 5; // Exactly 5 rotations
             const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
             
             const startTime = Date.now();
             
             // Add visual feedback
             const button = document.getElementById('spinButton');
-            button.textContent = '🌀 جاري الدوران الطبيعي...';
-            button.style.background = 'linear-gradient(45deg, #06FFB4, #3A86FF)';
+            button.textContent = '� جاري الدوران (5 مرات)...';
+            button.style.background = 'linear-gradient(45deg, #FFD700, #FFA500)';
             
             function animate() {
                 const elapsed = Date.now() - startTime;
                 const progress = Math.min(elapsed / spinDuration, 1);
                 
-                // Natural easing - very gentle deceleration
-                const easeOut = 1 - Math.pow(1 - progress, 2); // Quadratic easing (natural)
+                // Simple linear easing for direct motion
+                const easeOut = progress; // Linear - no fancy easing
                 currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
                 
                 drawWheel();
