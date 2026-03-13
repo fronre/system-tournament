@@ -726,7 +726,7 @@
             }
             
             if (players.length >= 32) {
-                showMessage('تم الوصول للحد الأقصى من اللاعبين', 'error');
+                showMessage('تم الوصول للحد الأقصى من اللاعبين (32)', 'error');
                 return;
             }
             
@@ -741,7 +741,10 @@
             input.value = '';
             updatePlayersList();
             drawWheel();
-            showMessage(`تم إضافة ${name} بنجاح`, 'success');
+            showMessage(`تم إضافة ${name} بنجاح (${players.length}/32)`, 'success');
+            
+            // Check if we can create tournament bracket
+            checkTournamentReadiness();
         }
 
         function removePlayer(playerId) {
@@ -750,7 +753,60 @@
             availablePlayers = availablePlayers.filter(p => p.id !== playerId);
             updatePlayersList();
             drawWheel();
-            showMessage(`تم حذف ${player.name}`, 'info');
+            showMessage(`تم حذف ${player.name} (${players.length}/32)`, 'info');
+            
+            // Check tournament readiness
+            checkTournamentReadiness();
+        }
+
+        function checkTournamentReadiness() {
+            const totalPlayers = players.length;
+            const selectedCount = selectedPlayers.length;
+            const availableCount = availablePlayers.length;
+            
+            // Show progress indicator
+            const progressDiv = document.getElementById('tournamentProgress');
+            if (!progressDiv) {
+                const div = document.createElement('div');
+                div.id = 'tournamentProgress';
+                div.style.cssText = `
+                    background: var(--bg-card);
+                    border: 1px solid var(--neon-cyan);
+                    border-radius: 10px;
+                    padding: 15px;
+                    margin: 20px 0;
+                    text-align: center;
+                `;
+                document.querySelector('main').appendChild(div);
+            }
+            
+            let progressHTML = `<h3 style="color: var(--neon-cyan); margin-bottom: 10px;">📊 تقدم البطولة</h3>`;
+            progressHTML += `<div style="display: flex; justify-content: space-around; margin-bottom: 10px;">`;
+            progressHTML += `<div>👥 الإجمالي: ${totalPlayers}</div>`;
+            progressHTML += `<div>🎯 متاحون: ${availableCount}</div>`;
+            progressHTML += `<div>✅ مختارون: ${selectedCount}</div>`;
+            progressHTML += `</div>`;
+            
+            // Check for tournament readiness
+            if (totalPlayers >= 16) {
+                progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">`;
+                if (totalPlayers === 16) {
+                    progressHTML += `🏆 جاهز لبطولة 16 لاعب (8 مباريات)`;
+                } else if (totalPlayers === 32) {
+                    progressHTML += `🏆 جاهز لبطولة 32 لاعب (16 مباريات)`;
+                } else {
+                    progressHTML += `🎯 ${totalPlayers} لاعب - يمكن بدء بطولة 16 لاعب`;
+                }
+                progressHTML += `</div>`;
+                
+                if (matches.length >= 4 && totalPlayers === 16) {
+                    progressHTML += `<button onclick="createTournamentBracket()" style="margin-top: 10px; background: var(--neon-green); color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">🚀 بدء البطولة</button>`;
+                }
+            } else {
+                progressHTML += `<div style="color: var(--neon-pink);">⏳ تحتاج ${16 - totalPlayers} لاعبين إضافيين لبطولة 16 لاعب</div>`;
+            }
+            
+            document.getElementById('tournamentProgress').innerHTML = progressHTML;
         }
 
         function updatePlayersList() {
@@ -973,8 +1029,15 @@
             matches.push(match);
             updateMatchesList();
             
-            // Check if we should create tournament bracket
-            if (matches.length === 8) {
+            // Check tournament readiness after each match
+            checkTournamentReadiness();
+            
+            // Auto-create bracket for 16 players (8 matches)
+            if (matches.length === 8 && players.length === 16) {
+                createTournamentBracket();
+            }
+            // Auto-create bracket for 32 players (16 matches) 
+            else if (matches.length === 16 && players.length === 32) {
                 createTournamentBracket();
             }
         }
@@ -1037,12 +1100,17 @@
             bracket.style.display = 'block';
             container.innerHTML = '';
             
+            const is16PlayerTournament = players.length === 16;
+            const totalMatches = is16PlayerTournament ? 8 : 16;
+            const quarterFinalMatches = is16PlayerTournament ? 8 : 16;
+            const semiFinalMatches = is16PlayerTournament ? 4 : 8;
+            
             // Quarter Finals
             const quarterFinals = document.createElement('div');
             quarterFinals.className = 'bracket-round';
-            quarterFinals.innerHTML = '<h3 class="round-title">الدور الأول</h3>';
+            quarterFinals.innerHTML = `<h3 class="round-title">الدور الأول (${quarterFinalMatches} مباريات)</h3>`;
             
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < Math.min(matches.length, quarterFinalMatches); i++) {
                 const matchDiv = document.createElement('div');
                 matchDiv.className = 'bracket-match';
                 matchDiv.innerHTML = `
@@ -1071,9 +1139,9 @@
             // Semi Finals
             const semiFinals = document.createElement('div');
             semiFinals.className = 'bracket-round';
-            semiFinals.innerHTML = '<h3 class="round-title">نصف النهائي</h3>';
+            semiFinals.innerHTML = `<h3 class="round-title">نصف النهائي (${semiFinalMatches} مباريات)</h3>`;
             
-            for (let i = 0; i < 2; i++) {
+            for (let i = 0; i < semiFinalMatches; i++) {
                 const matchDiv = document.createElement('div');
                 matchDiv.className = 'bracket-match semi-final-placeholder';
                 matchDiv.id = `semi-final-${i}`;
@@ -1102,7 +1170,7 @@
             container.appendChild(semiFinals);
             container.appendChild(final);
             
-            showMessage('تم إنشاء شجرة البطولة! اختر الفائزين في الدور الأول', 'success');
+            showMessage(`تم إنشاء شجرة بطولة ${is16PlayerTournament ? '16' : '32'} لاعب! اختر الفائزين في الدور الأول`, 'success');
         }
 
         // Utility Functions
