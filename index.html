@@ -267,13 +267,29 @@
         .wheel-pointer {
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid var(--neon-pink);
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-top: 50px solid var(--neon-pink);
             position: relative;
-            top: -20px;
-            filter: drop-shadow(0 0 10px var(--neon-pink));
+            top: -25px;
+            filter: drop-shadow(0 0 15px var(--neon-pink));
             animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        /* Add a clear target indicator */
+        .wheel-pointer::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -15px;
+            width: 30px;
+            height: 30px;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 20px var(--neon-pink);
+            animation: pulse 1s infinite;
         }
 
         @keyframes bounce {
@@ -786,11 +802,20 @@
         function selectWinner() {
             if (availablePlayers.length === 0) return;
             
-            // More accurate winner selection based on pointer position
+            // Accurate selection: The pointer is at the TOP (12 o'clock position)
+            // So we need to find which segment is at the top when wheel stops
             const anglePerPlayer = (2 * Math.PI) / availablePlayers.length;
+            
+            // Current rotation angle (how much the wheel has turned)
             const normalizedRotation = currentRotation % (2 * Math.PI);
-            const adjustedRotation = (2 * Math.PI - normalizedRotation + Math.PI / 2) % (2 * Math.PI);
-            const winnerIndex = Math.floor(adjustedRotation / anglePerPlayer) % availablePlayers.length;
+            
+            // Since the pointer is at the top, we need to find which segment
+            // is currently at the top position
+            // The wheel rotates clockwise, so we calculate from the top
+            const topPositionAngle = (2 * Math.PI - normalizedRotation + Math.PI / 2) % (2 * Math.PI);
+            
+            // Find which player is at the top
+            const winnerIndex = Math.floor(topPositionAngle / anglePerPlayer) % availablePlayers.length;
             
             const winner = availablePlayers[winnerIndex];
             availablePlayers.splice(winnerIndex, 1);
