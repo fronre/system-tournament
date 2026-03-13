@@ -996,51 +996,58 @@
         }
 
         function spinWheel() {
-            if (isSpinning || availablePlayers.length === 0) return;
-            
-            isSpinning = true;
-            document.getElementById('spinButton').disabled = true;
-            
-            // Add spinning animation to container
-            document.querySelector('.wheel-container').classList.add('spinning');
-            
-            // Exactly 5 rotations with clear visibility
-            const spinDuration = 5000; // 5 seconds for clearer view
-            const spinRotations = 5; // Exactly 5 rotations
-            const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
-            
-            const startTime = Date.now();
-            
-            // Add visual feedback
-            const button = document.getElementById('spinButton');
-            button.textContent = '🎯 دوران 5 مرات أمامك...';
-            button.style.background = 'linear-gradient(45deg, #FFD700, #FFA500)';
-            
-            function animate() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / spinDuration, 1);
-                
-                // Smooth linear motion for clear visibility
-                const easeOut = progress;
-                currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
-                
-                drawWheel();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    isSpinning = false;
-                    // Remove spinning animation
-                    document.querySelector('.wheel-container').classList.remove('spinning');
-                    button.textContent = 'دور العجلة';
-                    button.style.background = '';
-                    document.getElementById('spinButton').disabled = false;
-                    selectWinner();
-                }
-            }
-            
-            animate();
+
+    if (isSpinning || availablePlayers.length === 0) return;
+
+    isSpinning = true;
+    document.getElementById('spinButton').disabled = true;
+
+    document.querySelector('.wheel-container').classList.add('spinning');
+
+    const spinDuration = 5000;
+    const spins = 8 + Math.random() * 4;
+
+    const startRotation = currentRotation;
+    const targetRotation = startRotation + spins * 2 * Math.PI;
+
+    const startTime = performance.now();
+
+    const button = document.getElementById('spinButton');
+    button.textContent = "� العجلة تدور...";
+    button.style.background = "linear-gradient(45deg,#FFD700,#FFA500)";
+
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animate(time) {
+
+        const progress = Math.min((time - startTime) / spinDuration, 1);
+        const eased = easeOutCubic(progress);
+
+        currentRotation = startRotation + (targetRotation - startRotation) * eased;
+
+        drawWheel();
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+
+            isSpinning = false;
+
+            document.querySelector('.wheel-container').classList.remove('spinning');
+
+            button.textContent = "دور العجلة";
+            button.style.background = "";
+
+            document.getElementById('spinButton').disabled = false;
+
+            selectWinner();
         }
+    }
+
+    requestAnimationFrame(animate);
+}
 
         function selectWinner() {
             if (availablePlayers.length === 0) return;
