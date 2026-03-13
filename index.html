@@ -202,21 +202,23 @@
         .players-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            max-height: 400px;
+            gap: 8px;
+            max-height: 300px;
             overflow-y: auto;
+            flex: 1;
         }
 
         .player-chip {
             background: linear-gradient(45deg, var(--bg-secondary), var(--bg-card));
             border: 1px solid var(--neon-cyan);
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 20px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             animation: fadeIn 0.3s ease;
             box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            font-size: 14px;
         }
 
         @keyframes fadeIn {
@@ -254,7 +256,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            flex: 1;
+            justify-content: center;
         }
 
         #wheelCanvas {
@@ -262,6 +266,8 @@
             border-radius: 50%;
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
             background: var(--bg-primary);
+            max-width: 280px;
+            max-height: 280px;
         }
 
         .wheel-pointer {
@@ -318,16 +324,17 @@
         .matches-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            max-height: 500px;
+            gap: 10px;
+            max-height: 350px;
             overflow-y: auto;
+            flex: 1;
         }
 
         .match-card {
             background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
             border: 1px solid var(--neon-purple);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
             animation: slideIn 0.5s ease;
             transition: all 0.3s ease;
@@ -532,10 +539,21 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            main {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+                padding: 15px;
+            }
+        }
+
         @media (max-width: 1024px) {
             main {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 15px;
+                padding: 15px;
+                height: auto;
+                overflow-y: auto;
             }
 
             h1 {
@@ -550,7 +568,7 @@
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
             }
 
             h1 {
@@ -559,11 +577,53 @@
 
             .card {
                 padding: 15px;
+                min-height: 300px;
             }
 
             #wheelCanvas {
                 width: 250px !important;
                 height: 250px !important;
+            }
+
+            .players-list {
+                max-height: 200px;
+            }
+
+            .matches-list {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 15px 10px;
+            }
+
+            main {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 10px;
+                min-height: 250px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            #wheelCanvas {
+                width: 200px !important;
+                height: 200px !important;
+            }
+
+            .spin-button {
+                padding: 10px 20px;
+                font-size: 14px;
             }
         }
 
