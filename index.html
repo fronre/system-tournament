@@ -999,19 +999,51 @@
 
     if (isSpinning || availablePlayers.length === 0) return;
     
-    // Check player count restrictions
-    if (availablePlayers.length < 16) {
+    // Check if we have enough players to continue or complete
+    const totalPlayers = players.length;
+    const selectedCount = selectedPlayers.length;
+    const availableCount = availablePlayers.length;
+    
+    // Show current status
+    if (selectedCount > 0) {
+        showMessage(`تم اختيار ${selectedCount} من ${totalPlayers} لاعب - متبقي ${availableCount}`, 'info');
+    }
+    
+    // Check if we can complete a tournament
+    if (selectedCount >= 16 && availableCount >= 16) {
+        showMessage('لديك 16 لاعب محدد! يمكنك بدء بطولة ربع نهائية', 'success');
+        return;
+    }
+    
+    if (selectedCount >= 32 && availableCount >= 32) {
+        showMessage('لديك 32 لاعب محدد! يمكنك بدء بطولة كاملة', 'success');
+        return;
+    }
+    
+    // Check if we need more players to complete
+    if (selectedCount > 0 && selectedCount < 16) {
+        const needed = 16 - selectedCount;
+        if (availableCount >= needed) {
+            showMessage(`تحتاج إلى ${needed} لاعبين إضافيين للوصول إلى 16`, 'info');
+        } else {
+            showMessage(`تحتاج إلى ${needed} لاعبين ولكن متبقي فقط ${availableCount}`, 'error');
+        }
+        return;
+    }
+    
+    if (selectedCount >= 16 && selectedCount < 32) {
+        const needed = 32 - selectedCount;
+        if (availableCount >= needed) {
+            showMessage(`تحتاج إلى ${needed} لاعبين إضافيين للوصول إلى 32`, 'info');
+        } else {
+            showMessage(`تحتاج إلى ${needed} لاعبين ولكن متبقي فقط ${availableCount}`, 'error');
+        }
+        return;
+    }
+    
+    // If no players selected yet, require minimum 16
+    if (selectedCount === 0 && totalPlayers < 16) {
         showMessage('تحتاج إلى 16 لاعب على الأقل للبدء!', 'error');
-        return;
-    }
-    
-    if (availablePlayers.length > 16 && availablePlayers.length < 32) {
-        showMessage('تحتاج إلى 32 لاعب للبطولة الكاملة!', 'error');
-        return;
-    }
-    
-    if (availablePlayers.length > 32) {
-        showMessage('الحد الأقصى هو 32 لاعب!', 'error');
         return;
     }
 
