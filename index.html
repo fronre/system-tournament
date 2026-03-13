@@ -770,7 +770,9 @@
             // Highlight the segment at the pointer position
             if (availablePlayers.length > 0) {
                 const normalizedRotation = currentRotation % (2 * Math.PI);
-                const topSegmentIndex = Math.floor(((2 * Math.PI - normalizedRotation) % (2 * Math.PI)) / anglePerPlayer) % availablePlayers.length;
+                const topAngle = -Math.PI / 2;
+                const adjustedTopAngle = (topAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI);
+                const topSegmentIndex = Math.floor(adjustedTopAngle / anglePerPlayer) % availablePlayers.length;
                 
                 // Highlight the selected segment
                 const startAngle = topSegmentIndex * anglePerPlayer + currentRotation;
@@ -824,23 +826,31 @@
         function selectWinner() {
             if (availablePlayers.length === 0) return;
             
-            // The pointer is at the TOP (12 o'clock position = angle 0)
-            // We need to find which segment is currently at the top
+            // The pointer is at the TOP (12 o'clock position = angle 0 in canvas coordinates)
             const anglePerPlayer = (2 * Math.PI) / availablePlayers.length;
             
-            // Get the current rotation of the wheel
+            // Get current rotation and normalize it
             const normalizedRotation = currentRotation % (2 * Math.PI);
             
-            // Calculate which segment is at the top position
-            const topSegmentIndex = Math.floor(((2 * Math.PI - normalizedRotation) % (2 * Math.PI)) / anglePerPlayer) % availablePlayers.length;
+            // Since the wheel rotates clockwise, and we want the segment at the top (angle 0)
+            // We need to find which segment's center is closest to angle 0
+            // Canvas coordinates: 0 angle is at 3 o'clock, but our pointer is at 12 o'clock (top)
+            // So we need to adjust by -π/2 (90 degrees) to align with our pointer
             
-            const winner = availablePlayers[topSegmentIndex];
+            // The segment at the top will be the one where its center angle is closest to -π/2
+            const topAngle = -Math.PI / 2; // Top position in canvas coordinates
+            const adjustedTopAngle = (topAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI);
+            
+            // Find which player is at this angle
+            const winnerIndex = Math.floor(adjustedTopAngle / anglePerPlayer) % availablePlayers.length;
+            
+            const winner = availablePlayers[winnerIndex];
             
             // Show clear selection before removing
-            showSelectionHighlight(winner, topSegmentIndex);
+            showSelectionHighlight(winner, winnerIndex);
             
             setTimeout(() => {
-                availablePlayers.splice(topSegmentIndex, 1);
+                availablePlayers.splice(winnerIndex, 1);
                 selectedPlayers.push(winner);
                 
                 // Add visual effect for selected player
