@@ -256,9 +256,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             flex: 1;
             justify-content: center;
+            min-height: 600px; /* Increased to fit larger wheel */
         }
 
         #wheelCanvas {
@@ -266,10 +267,10 @@
             border-radius: 50%;
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
             background: var(--bg-primary);
-            max-width: 550px;
-            max-height: 550px;
-            width: 550px;
-            height: 550px;
+            max-width: 500px;
+            max-height: 500px;
+            width: 500px;
+            height: 500px;
             position: relative;
             z-index: 100;
         }
@@ -656,8 +657,8 @@
             }
 
             #wheelCanvas {
-                width: 450px !important;
-                height: 450px !important;
+                width: 400px !important;
+                height: 400px !important;
             }
 
             .players-list {
@@ -700,8 +701,8 @@
             }
 
             #wheelCanvas {
-                width: 350px !important;
-                height: 350px !important;
+                width: 320px !important;
+                height: 320px !important;
             }
 
             .spin-button {
@@ -759,7 +760,7 @@
             <h2>عجلة القرعة</h2>
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <canvas id="wheelCanvas" width="550" height="550"></canvas>
+                <canvas id="wheelCanvas" width="500" height="500"></canvas>
                 <button class="spin-button" id="spinButton" onclick="spinWheel()">دور العجلة</button>
             </div>
         </section>
