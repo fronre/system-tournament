@@ -927,13 +927,13 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = 200; // Proper size for 500px canvas
+            const radius = 220; // Large and beautiful
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             if (availablePlayers.length === 0) {
                 ctx.fillStyle = '#666';
-                ctx.font = '18px Arial';
+                ctx.font = '20px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('أضف لاعبين للبدء', centerX, centerY);
                 return;
@@ -952,7 +952,7 @@
                 ctx.fillStyle = player.color;
                 ctx.fill();
                 ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 3;
                 ctx.stroke();
                 
                 ctx.save();
@@ -960,28 +960,43 @@
                 ctx.rotate(startAngle + anglePerPlayer / 2);
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 14px Arial';
+                ctx.font = 'bold 16px Arial';
                 ctx.fillText(player.name, radius / 2, 0);
                 ctx.restore();
             });
             
-            // Draw center circle
+            // Draw beautiful center circle
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
+            ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
             ctx.fillStyle = '#fff';
             ctx.fill();
             ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.stroke();
             
-            // Draw simple selection indicator
+            // Draw beautiful selection indicator with gradient
             ctx.beginPath();
             ctx.moveTo(centerX, centerY - radius);
-            ctx.lineTo(centerX, centerY - radius - 20);
-            ctx.strokeStyle = '#FFD700';
-            ctx.lineWidth = 4;
+            ctx.lineTo(centerX, centerY - radius - 30);
+            
+            const gradient = ctx.createLinearGradient(centerX, centerY - radius, centerX, centerY - radius - 30);
+            gradient.addColorStop(0, '#FFD700');
+            gradient.addColorStop(1, '#FFA500');
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 6;
             ctx.lineCap = 'round';
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 15;
             ctx.stroke();
+            
+            // Add decorative elements
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - radius - 35, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = '#FFD700';
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 20;
+            ctx.fill();
             
             // Highlight the segment at the pointer position
             if (availablePlayers.length > 0) {
@@ -995,10 +1010,12 @@
                 
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius + 5, startAngle, endAngle);
+                ctx.arc(centerX, centerY, radius + 8, startAngle, endAngle);
                 ctx.closePath();
                 ctx.strokeStyle = '#FFD700';
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 5;
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 20;
                 ctx.stroke();
             }
         }
@@ -1012,8 +1029,8 @@
 
     document.querySelector('.wheel-container').classList.add('spinning');
 
-    const spinDuration = 5000;
-    const spins = 8 + Math.random() * 4;
+    const spinDuration = 6000; // Longer duration for more spinning
+    const spins = 12 + Math.random() * 8; // 12-20 rotations (lots of spinning!)
 
     const startRotation = currentRotation;
     const targetRotation = startRotation + spins * 2 * Math.PI;
@@ -1021,8 +1038,8 @@
     const startTime = performance.now();
 
     const button = document.getElementById('spinButton');
-    button.textContent = "🎡 العجلة تدور...";
-    button.style.background = "linear-gradient(45deg,#FFD700,#FFA500)";
+    button.textContent = "🎡 العجلة تدور بقوة...";
+    button.style.background = "linear-gradient(45deg,#FFD700,#FFA500,#FF6347)";
 
     function easeOutCubic(t) {
         return 1 - Math.pow(1 - t, 3);
