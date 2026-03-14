@@ -1077,53 +1077,54 @@
             const selectedCount = selectedPlayers.length;
             const availableCount = availablePlayers.length;
             
-            // Show progress indicator - but ensure it doesn't interfere with wheel button
-            const progressDiv = document.getElementById('tournamentProgress');
-            if (!progressDiv) {
-                const div = document.createElement('div');
-                div.id = 'tournamentProgress';
-                div.style.cssText = `
-                    background: var(--bg-card);
-                    border: 1px solid var(--neon-cyan);
-                    border-radius: 10px;
-                    padding: 15px;
-                    margin: 10px 0;
-                    text-align: center;
-                    position: relative;
-                    z-index: 1;
-                `;
-                // Insert after the wheel section, not in the middle
-                const wheelSection = document.querySelector('.wheel-container').closest('.card');
-                wheelSection.parentNode.insertBefore(div, wheelSection.nextSibling);
-            }
+            // Don't show progress indicator to avoid interfering with wheel button
+            // Only show when we have enough players for tournament
             
-            let progressHTML = `<h3 style="color: var(--neon-cyan); margin-bottom: 10px;">تقدم البطولة</h3>`;
-            progressHTML += `<div style="display: flex; justify-content: space-around; margin-bottom: 10px;">`;
-            progressHTML += `<div>إجمالي اللاعبين: ${totalPlayers}</div>`;
-            progressHTML += `<div>المتاحون: ${availableCount}</div>`;
-            progressHTML += `<div>المختارون: ${selectedCount}</div>`;
-            progressHTML += `</div>`;
-            
-            // Check for tournament readiness
             if (totalPlayers >= 16) {
-                progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">`;
-                if (totalPlayers === 16) {
-                    progressHTML += `يمكن إنشاء بطولة 16 لاعب (8 مباريات)`;
-                } else if (totalPlayers === 32) {
-                    progressHTML += `يمكن إنشاء بطولة 32 لاعب (16 مباراة)`;
-                } else {
-                    progressHTML += `يوجد ${totalPlayers} لاعب - تحتاج 16 لاعب على الأقل`;
+                // Show progress indicator only when needed
+                const progressDiv = document.getElementById('tournamentProgress');
+                if (!progressDiv) {
+                    const div = document.createElement('div');
+                    div.id = 'tournamentProgress';
+                    div.style.cssText = `
+                        background: var(--bg-card);
+                        border: 1px solid var(--neon-cyan);
+                        border-radius: 10px;
+                        padding: 15px;
+                        margin: 10px 0;
+                        text-align: center;
+                        position: relative;
+                        z-index: 1;
+                    `;
+                    // Add to the end of main, not interfering with wheel
+                    document.querySelector('main').appendChild(div);
                 }
+                
+                let progressHTML = `<h3 style="color: var(--neon-cyan); margin-bottom: 10px;">تقدم البطولة</h3>`;
+                progressHTML += `<div style="display: flex; justify-content: space-around; margin-bottom: 10px;">`;
+                progressHTML += `<div>إجمالي اللاعبين: ${totalPlayers}</div>`;
+                progressHTML += `<div>المتاحون: ${availableCount}</div>`;
+                progressHTML += `<div>المختارون: ${selectedCount}</div>`;
                 progressHTML += `</div>`;
+                
+                if (totalPlayers === 16) {
+                    progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">يمكن إنشاء بطولة 16 لاعب (8 مباريات)</div>`;
+                } else if (totalPlayers === 32) {
+                    progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">يمكن إنشاء بطولة 32 لاعب (16 مباراة)</div>`;
+                }
                 
                 if (matches.length >= 4 && totalPlayers === 16) {
                     progressHTML += `<button onclick="createTournamentBracket()" style="margin-top: 10px; background: var(--neon-green); color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">إنشاء البطولة</button>`;
                 }
+                
+                document.getElementById('tournamentProgress').innerHTML = progressHTML;
             } else {
-                progressHTML += `<div style="color: var(--neon-pink);">تحتاج ${16 - totalPlayers} لاعبين إضافيين للوصول 16 لاعب</div>`;
+                // Remove progress indicator if not enough players
+                const progressDiv = document.getElementById('tournamentProgress');
+                if (progressDiv) {
+                    progressDiv.remove();
+                }
             }
-            
-            document.getElementById('tournamentProgress').innerHTML = progressHTML;
         }
 
         function updatePlayersList() {
