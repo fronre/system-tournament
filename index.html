@@ -256,9 +256,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             flex: 1;
             justify-content: center;
+            min-height: 600px; /* Increased to fit larger wheel */
         }
 
         #wheelCanvas {
@@ -266,8 +267,30 @@
             border-radius: 50%;
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
             background: var(--bg-primary);
-            max-width: 280px;
-            max-height: 280px;
+            max-width: 500px;
+            max-height: 500px;
+            width: 500px;
+            height: 500px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .wheel-container.spinning #wheelCanvas {
+            transform: scale(1.1);
+            box-shadow: 0 0 80px rgba(0, 255, 255, 0.8);
+            border-color: #FFD700;
+            animation: wheelGlow 0.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes wheelGlow {
+            0% { 
+                box-shadow: 0 0 80px rgba(0, 255, 255, 0.8);
+                transform: scale(1.1);
+            }
+            100% { 
+                box-shadow: 0 0 120px rgba(255, 215, 0, 0.9);
+                transform: scale(1.15);
+            }
         }
 
         .wheel-pointer {
@@ -279,8 +302,8 @@
             position: relative;
             top: -25px;
             filter: drop-shadow(0 0 15px var(--neon-pink));
-            animation: bounce 2s infinite;
-            z-index: 10;
+            animation: bounce 2s infinite, pointerGlow 1s ease-in-out infinite alternate;
+            z-index: 101;
         }
 
         /* Add a clear target indicator */
@@ -298,9 +321,31 @@
             animation: pulse 1s infinite;
         }
 
+        .wheel-container.spinning .wheel-pointer {
+            border-top-color: #FFD700;
+            filter: drop-shadow(0 0 30px #FFD700);
+            animation: bounce 0.5s infinite, pointerSpinGlow 0.3s ease-in-out infinite alternate;
+        }
+
+        .wheel-container.spinning .wheel-pointer::before {
+            background: #FFD700;
+            box-shadow: 0 0 30px #FFD700;
+            animation: pulse 0.5s infinite;
+        }
+
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pointerGlow {
+            0% { filter: drop-shadow(0 0 15px var(--neon-pink)); }
+            100% { filter: drop-shadow(0 0 30px var(--neon-pink)); }
+        }
+
+        @keyframes pointerSpinGlow {
+            0% { filter: drop-shadow(0 0 30px #FFD700); }
+            100% { filter: drop-shadow(0 0 50px #FFD700); }
         }
 
         .spin-button {
@@ -308,16 +353,17 @@
             padding: 15px 40px;
             font-size: 18px;
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            transition: all 0.3s ease;
         }
 
-        .spin-button:hover {
+        .spin-button:hover:not(:disabled) {
             box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+            transform: scale(1.05);
         }
 
         .spin-button:disabled {
-            background: #444;
             cursor: not-allowed;
-            opacity: 0.6;
+            opacity: 0.8;
         }
 
         /* Matches Section */
@@ -611,8 +657,8 @@
             }
 
             #wheelCanvas {
-                width: 250px !important;
-                height: 250px !important;
+                width: 400px !important;
+                height: 400px !important;
             }
 
             .players-list {
@@ -655,8 +701,8 @@
             }
 
             #wheelCanvas {
-                width: 200px !important;
-                height: 200px !important;
+                width: 320px !important;
+                height: 320px !important;
             }
 
             .spin-button {
@@ -714,7 +760,7 @@
             <h2>عجلة القرعة</h2>
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
-                <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                <canvas id="wheelCanvas" width="500" height="500"></canvas>
                 <button class="spin-button" id="spinButton" onclick="spinWheel()">دور العجلة</button>
             </div>
         </section>
@@ -877,13 +923,13 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = 120;
+            const radius = 220; // Large and beautiful
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             if (availablePlayers.length === 0) {
                 ctx.fillStyle = '#666';
-                ctx.font = '16px Arial';
+                ctx.font = '20px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('أضف لاعبين للبدء', centerX, centerY);
                 return;
@@ -902,7 +948,7 @@
                 ctx.fillStyle = player.color;
                 ctx.fill();
                 ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 3;
                 ctx.stroke();
                 
                 ctx.save();
@@ -910,24 +956,43 @@
                 ctx.rotate(startAngle + anglePerPlayer / 2);
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 12px Arial';
+                ctx.font = 'bold 16px Arial';
                 ctx.fillText(player.name, radius / 2, 0);
                 ctx.restore();
             });
             
+            // Draw beautiful center circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 35, 0, 2 * Math.PI);
             ctx.fillStyle = '#fff';
             ctx.fill();
             ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.stroke();
             
-            // Draw selection indicator line at top (where pointer points)
+            // Draw beautiful selection indicator with gradient
             ctx.beginPath();
             ctx.moveTo(centerX, centerY - radius);
-            ctx.lineTo(centerX, centerY - radius - 10);
-            ctx.strokeStyle = '#FFD700';
-            ctx.lineWidth = 4;
+            ctx.lineTo(centerX, centerY - radius - 30);
+            
+            const gradient = ctx.createLinearGradient(centerX, centerY - radius, centerX, centerY - radius - 30);
+            gradient.addColorStop(0, '#FFD700');
+            gradient.addColorStop(1, '#FFA500');
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 15;
             ctx.stroke();
+            
+            // Add decorative elements
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - radius - 35, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = '#FFD700';
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 20;
+            ctx.fill();
             
             // Highlight the segment at the pointer position
             if (availablePlayers.length > 0) {
@@ -936,54 +1001,74 @@
                 const adjustedTopAngle = (topAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI);
                 const topSegmentIndex = Math.floor(adjustedTopAngle / anglePerPlayer) % availablePlayers.length;
                 
-                // Highlight the selected segment
                 const startAngle = topSegmentIndex * anglePerPlayer + currentRotation;
                 const endAngle = startAngle + anglePerPlayer;
                 
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius + 5, startAngle, endAngle);
+                ctx.arc(centerX, centerY, radius + 8, startAngle, endAngle);
                 ctx.closePath();
                 ctx.strokeStyle = '#FFD700';
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 5;
+                ctx.shadowColor = '#FFD700';
+                ctx.shadowBlur = 20;
                 ctx.stroke();
             }
         }
 
         function spinWheel() {
-            if (isSpinning || availablePlayers.length === 0) return;
-            
-            isSpinning = true;
-            document.getElementById('spinButton').disabled = true;
-            
-            // Faster and lighter spin
-            const spinDuration = 2000 + Math.random() * 1000; // Reduced from 3000-5000 to 2000-3000
-            const spinRotations = 3 + Math.random() * 3; // Reduced from 5-10 to 3-6
-            const targetRotation = currentRotation + (spinRotations * 2 * Math.PI);
-            
-            const startTime = Date.now();
-            
-            function animate() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / spinDuration, 1);
-                
-                // Faster easing function
-                const easeOut = 1 - Math.pow(1 - progress, 2); // Changed from cubic to quadratic
-                currentRotation = currentRotation + (targetRotation - currentRotation) * easeOut;
-                
-                drawWheel();
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    isSpinning = false;
-                    document.getElementById('spinButton').disabled = false;
-                    selectWinner();
-                }
-            }
-            
-            animate();
+
+    if (isSpinning || availablePlayers.length === 0) return;
+
+    isSpinning = true;
+    document.getElementById('spinButton').disabled = true;
+
+    document.querySelector('.wheel-container').classList.add('spinning');
+
+    const spinDuration = 6000; // Longer duration for more spinning
+    const spins = 12 + Math.random() * 8; // 12-20 rotations (lots of spinning!)
+
+    const startRotation = currentRotation;
+    const targetRotation = startRotation + spins * 2 * Math.PI;
+
+    const startTime = performance.now();
+
+    const button = document.getElementById('spinButton');
+    button.textContent = "🎡 العجلة تدور بقوة...";
+    button.style.background = "linear-gradient(45deg,#FFD700,#FFA500,#FF6347)";
+
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+
+    function animate(time) {
+
+        const progress = Math.min((time - startTime) / spinDuration, 1);
+        const eased = easeOutCubic(progress);
+
+        currentRotation = startRotation + (targetRotation - startRotation) * eased;
+
+        drawWheel();
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+
+            isSpinning = false;
+
+            document.querySelector('.wheel-container').classList.remove('spinning');
+
+            button.textContent = "دور العجلة";
+            button.style.background = "";
+
+            document.getElementById('spinButton').disabled = false;
+
+            selectWinner();
         }
+    }
+
+    requestAnimationFrame(animate);
+}
 
         function selectWinner() {
             if (availablePlayers.length === 0) return;
@@ -1024,6 +1109,10 @@
                 if (selectedPlayers.length % 4 === 0 && selectedPlayers.length >= 4) {
                     createMatchFromSelected();
                 }
+                
+                // Update status after selection
+                checkTournamentReadiness();
+                updatePlayersList();
                 
                 drawWheel();
             }, 1000); // 1 second delay to show selection
