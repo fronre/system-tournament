@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة البطولات | Tournament System</title>
+    <meta name="description" content="منصة احترافية لإدارة بطولات الألعاب والرياضة">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Animated stars background */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, rgba(0,255,255,0.4), transparent),
+                radial-gradient(1px 1px at 30% 40%, rgba(168,85,247,0.4), transparent),
+                radial-gradient(1px 1px at 70% 20%, rgba(255,0,110,0.3), transparent),
+                radial-gradient(1px 1px at 85% 60%, rgba(0,255,136,0.3), transparent),
+                radial-gradient(1px 1px at 50% 80%, rgba(255,215,0,0.3), transparent),
+                radial-gradient(1px 1px at 20% 70%, rgba(0,255,255,0.3), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cards-page { position: relative; z-index: 1; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.8rem;">🏆</span>
+            <div class="header-title gradient-text">منصة البطولات</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);letter-spacing:1px;">TOURNAMENT SYSTEM v1.0</div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="cards-page">
+        <!-- Hero -->
+        <div class="cards-hero">
+            <div class="hero-ring">
+                <h1 class="gradient-text">مرحباً بك في موقع البطولات</h1>
+            </div>
+            <p>اختر نوع البطولة وابدأ المنافسة الآن</p>
+        </div>
+
+        <!-- Tournament Type Cards -->
+        <div class="tournament-cards">
+
+            <!-- 1v1 -->
+            <a href="pages/1v1.html" class="tourney-card card-1v1">
+                <span class="card-icon">⚔️</span>
+                <div class="card-title">1 ضد 1</div>
+                <p class="card-desc">بطولة فردية بين اللاعبين مع عجلة اختيار عشوائية وشجرة بطولة احترافية</p>
+                <div class="card-features">
+                    <div class="card-feature">إضافة وحذف اللاعبين</div>
+                    <div class="card-feature">عجلة اختيار Canvas</div>
+                    <div class="card-feature">شجرة بطولة تلقائية</div>
+                </div>
+                <button class="card-btn">ابدأ البطولة</button>
+            </a>
+
+            <!-- 2v2 -->
+            <a href="pages/2v2.html" class="tourney-card card-2v2">
+                <span class="card-icon">🤝</span>
+                <div class="card-title">2 ضد 2</div>
+                <p class="card-desc">بطولة ثنائية — كوّن فرق من لاعبين اثنين وابدأ المنافسة</p>
+                <div class="card-features">
+                    <div class="card-feature">إنشاء فرق من 2 لاعبين</div>
+                    <div class="card-feature">توزيع عشوائي للفرق</div>
+                    <div class="card-feature">شجرة بطولة ثنائية</div>
+                </div>
+                <button class="card-btn">ابدأ البطولة</button>
+            </a>
+
+            <!-- 3v3 -->
+            <a href="pages/3v3.html" class="tourney-card card-3v3">
+                <span class="card-icon">⚡</span>
+                <div class="card-title">3 ضد 3</div>
+                <p class="card-desc">بطولة ثلاثية — فرق من 3 لاعبين لمنافسات مثيرة</p>
+                <div class="card-features">
+                    <div class="card-feature">إنشاء فرق من 3 لاعبين</div>
+                    <div class="card-feature">توزيع عشوائي للفرق</div>
+                    <div class="card-feature">شجرة بطولة كاملة</div>
+                </div>
+                <button class="card-btn">ابدأ البطولة</button>
+            </a>
+
+            <!-- Groups -->
+            <a href="pages/groups.html" class="tourney-card card-groups">
+                <span class="card-icon">🏟️</span>
+                <div class="card-title">دور المجموعات</div>
+                <p class="card-desc">نظام المجموعات — كل لاعب يواجه الجميع. الفوز = 3 نقاط | التعادل = 1</p>
+                <div class="card-features">
+                    <div class="card-feature">تقسيم تلقائي للمجموعات</div>
+                    <div class="card-feature">جدول نقاط مباشر</div>
+                    <div class="card-feature">ترتيب حسب النقاط</div>
+                </div>
+                <button class="card-btn">ابدأ البطولة</button>
+            </a>
+
+        </div>
+
+        <div class="cards-footer">
+            🚀 Tournament System &mdash; Professional Esports Platform
+        </div>
+    </main>
+</body>
+</html>

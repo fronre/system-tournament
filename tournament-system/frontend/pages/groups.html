@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دور المجموعات | Tournament System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .page-main { display:grid; grid-template-columns: 280px 1fr; gap:16px; padding:16px; height:calc(100vh - 66px); overflow:hidden; }
+
+        /* Groups */
+        .group-card {
+            background: linear-gradient(135deg, rgba(22,33,62,0.9), rgba(26,26,46,0.9));
+            border: 1px solid rgba(0,255,136,0.25);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .group-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+        .group-title { color:var(--neon-green); font-size:1rem; font-weight:700; letter-spacing:2px; text-shadow:0 0 10px rgba(0,255,136,0.5); }
+
+        /* Points Table */
+        .points-table-wrap { overflow-x:auto; margin-bottom:14px; }
+        .points-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .points-table th { color:var(--neon-cyan); font-size:11px; letter-spacing:1px; padding:6px 8px; border-bottom:1px solid var(--border-dim); text-align:center; }
+        .points-table td { padding:7px 8px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center; }
+        .points-table td:first-child { color:var(--text-muted); font-size:11px; }
+        .points-table td:nth-child(2) { text-align:right; font-weight:700; display:flex; align-items:center; gap:6px; }
+        .points-cell { color:var(--neon-gold); font-weight:900; font-size:15px; }
+        .rank-first td { background:rgba(255,215,0,0.06); }
+        .rank-first .points-cell { color:var(--neon-gold); }
+        .rank-second td { background:rgba(0,255,255,0.04); }
+        .player-dot { width:8px; height:8px; border-radius:50%; display:inline-block; flex-shrink:0; }
+
+        /* Group Matches */
+        .group-matches { display:flex; flex-direction:column; gap:6px; }
+        .matches-subtitle { font-size:11px; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; font-weight:700; }
+        .group-match {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 8px 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 12px;
+        }
+        .group-match.done { border-color: rgba(0,255,136,0.2); }
+        .gm-player { flex:1; font-weight:700; }
+        .gm-player:last-child { text-align:left; }
+        .gm-controls { display:flex; gap:4px; flex-shrink:0; }
+        .gm-btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,255,255,0.3);
+            color: var(--neon-cyan);
+            background: transparent;
+            font-size: 11px;
+            font-weight:700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-main);
+        }
+        .draw-btn { border-color:rgba(168,85,247,0.3); color:var(--neon-purple); }
+        .gm-btn:hover, .active-btn { background: rgba(0,255,255,0.15); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+        .draw-btn.active-btn { background: rgba(168,85,247,0.15); border-color: var(--neon-purple); color: var(--neon-purple); }
+
+        @media(max-width:900px){ .page-main { grid-template-columns:1fr; height:auto; overflow:auto; } }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <a href="../index.html" class="back-btn">← رجوع</a>
+    <h1 class="header-title gradient-text">🏟️ دور المجموعات</h1>
+    <span class="status-badge badge-active">نشط</span>
+</header>
+
+<div id="toastContainer"></div>
+
+<main class="page-main">
+
+    <!-- Left: Players -->
+    <section class="panel">
+        <div class="panel-title">👤 اللاعبون</div>
+        <div class="input-group">
+            <input type="text" id="playerNameInput" class="neon-input" placeholder="اسم اللاعب..." maxlength="20" autocomplete="off">
+            <button id="addPlayerBtn" class="btn btn-primary" onclick="addPlayer()">+</button>
+        </div>
+        <div class="counter-badge"><span>👥</span><span id="playersCount">0</span> لاعبين</div>
+
+        <!-- Group size -->
+        <div style="margin-bottom:10px;">
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">حجم المجموعة:</div>
+            <select id="groupSizeSelect" class="neon-input" style="padding:8px 12px;">
+                <option value="3">3 لاعبين</option>
+                <option value="4" selected>4 لاعبين</option>
+                <option value="5">5 لاعبين</option>
+                <option value="6">6 لاعبين</option>
+            </select>
+        </div>
+
+        <button id="generateGroupsBtn" class="btn btn-success btn-full" onclick="generateGroups()">
+            🏟️ إنشاء المجموعات
+        </button>
+        <button class="btn btn-danger btn-full" onclick="resetGroups()" style="margin-top:4px;font-size:11px;padding:7px;">♻️ إعادة تعيين</button>
+
+        <div class="panel-body" style="margin-top:12px;">
+            <div class="players-grid" id="playersGrid"></div>
+        </div>
+    </section>
+
+    <!-- Right: Groups -->
+    <section class="panel">
+        <div class="panel-title">🏟️ المجموعات</div>
+        <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:10px;">
+            فوز = 3 نقاط | تعادل = 1 نقطة | خسارة = 0
+        </div>
+        <div class="panel-body">
+            <div id="groupsContainer">
+                <div class="empty-state"><span>🏟️</span>أضف لاعبين ثم أنشئ المجموعات</div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/players.js"></script>
+<script src="../js/groups.js"></script>
+<script>
+    function onPlayersChanged() {
+        updatePlayersCount();
+    }
+
+    function resetGroups() {
+        groups = [];
+        renderGroups();
+        showToast('تم إعادة التعيين', 'info');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPlayers();
+        renderGroups();
+    });
+</script>
+</body>
+</html>

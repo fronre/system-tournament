@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطولة 1 ضد 1 | Tournament System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bracket.css">
+    <style>
+        .page-main {
+            display: grid;
+            grid-template-columns: 300px 440px 1fr;
+            gap: 16px;
+            padding: 16px;
+            height: calc(100vh - 66px);
+            overflow: hidden;
+        }
+        .wheel-center { display:flex; flex-direction:column; align-items:center; gap:10px; }
+        canvas { border-radius: 50%; display:block; }
+        .pending-label { font-size:11px; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; }
+        #pendingPick { min-height:40px; }
+
+        /* Groups page table inline */
+        .gm-match, .group-card { display:none; }
+
+        @media(max-width:1100px){
+            .page-main{ grid-template-columns:1fr 1fr; height:auto; overflow:auto; }
+        }
+        @media(max-width:700px){
+            .page-main{ grid-template-columns:1fr; height:auto; overflow:auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+    <a href="../index.html" class="back-btn">← رجوع</a>
+    <h1 class="header-title gradient-text">⚔️ بطولة 1 ضد 1</h1>
+    <span class="status-badge badge-active" id="statusBadge">نشط</span>
+</header>
+
+<!-- Toast container -->
+<div id="toastContainer"></div>
+
+<main class="page-main">
+
+    <!-- PANEL 1: Players -->
+    <section class="panel">
+        <div class="panel-title">👤 اللاعبون</div>
+        <div class="input-group">
+            <input type="text" id="playerNameInput" class="neon-input" placeholder="اسم اللاعب..." maxlength="20" autocomplete="off">
+            <button id="addPlayerBtn" class="btn btn-primary" onclick="addPlayer()">إضافة</button>
+        </div>
+        <div class="counter-badge">
+            <span>👥</span>
+            <span id="playersCount">0</span> لاعبين
+        </div>
+        <div class="panel-body">
+            <div class="players-grid" id="playersGrid">
+                <div class="empty-state"><span>👤</span>أضف لاعبين للبدء</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PANEL 2: Wheel -->
+    <section class="panel">
+        <div class="panel-title">🎡 عجلة الاختيار</div>
+        <div class="wheel-center">
+            <div class="counter-badge">
+                <span>🎯</span> متاح: <span id="wheelCount">0</span>
+            </div>
+            <canvas id="wheelCanvas" width="380" height="380"></canvas>
+            <button id="spinBtn" class="btn btn-gold btn-full" onclick="spinWheel()">🎡 تدوير العجلة</button>
+
+            <div class="pending-label">اللاعب المختار أولاً:</div>
+            <div id="pendingPick"></div>
+        </div>
+    </section>
+
+    <!-- PANEL 3: Matches + Bracket -->
+    <section class="panel">
+        <div class="panel-title">⚔️ المباريات</div>
+        <div id="matchStatus" style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:8px;">أدر العجلة لاختيار اللاعبين</div>
+        <button id="bracketBtn" class="btn btn-success btn-full" onclick="openBracket()" disabled>🏆 إنشاء شجرة البطولة</button>
+        <button class="btn btn-danger btn-full" onclick="resetMatches()" style="margin-top:4px;font-size:11px;padding:7px;">♻️ إعادة تعيين</button>
+        <div class="panel-body" style="margin-top:10px;">
+            <div id="matchesList">
+                <div class="empty-state"><span>⚔️</span>المباريات ستظهر هنا</div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Bracket Modal -->
+<div class="modal-overlay hidden" id="bracketModal">
+    <div class="modal-box bracket-modal" style="max-width:95vw;width:auto;">
+        <div class="modal-header">
+            <h2 class="gradient-text" style="font-size:1.3rem;">🏆 شجرة البطولة</h2>
+            <button class="modal-close" onclick="closeModal('bracketModal')">✕ إغلاق</button>
+        </div>
+        <div class="bracket-scroll">
+            <div class="bracket-container" id="bracketContainer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Champion Overlay -->
+<div class="champion-overlay hidden" id="championOverlay">
+    <div class="champion-content">
+        <span class="champion-trophy">🏆</span>
+        <div class="champion-label">البطل الأسطوري</div>
+        <div class="champion-name" id="championName">—</div>
+        <button class="btn btn-gold" onclick="hideChampion()">🎉 رائع!</button>
+    </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/players.js"></script>
+<script src="../js/wheel.js"></script>
+<script src="../js/matches.js"></script>
+<script src="../js/bracket.js"></script>
+<script>
+    // 1v1 specific: get teams for bracket from matchPairs
+    function getTeamsForBracket() {
+        // In 1v1, each player is a "team" of 1
+        return matchPairs.flatMap(m => [m.team1, m.team2]);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPlayers();
+        drawWheel();
+        renderMatches();
+        checkBracketReady();
+    });
+</script>
+</body>
+</html>

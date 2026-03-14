@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -70,6 +70,7 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
             animation: slideHeader 3s infinite;
+            pointer-events: none;
         }
 
         @keyframes slideHeader {
@@ -142,7 +143,7 @@
             border: 1px solid rgba(0, 255, 255, 0.2);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            overflow: hidden;
+            overflow: hidden auto;
             backdrop-filter: blur(10px);
             height: 100%;
             display: flex;
@@ -158,6 +159,7 @@
             height: 2px;
             background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
             animation: slideTop 3s linear infinite;
+            pointer-events: none;
         }
 
         @keyframes slideTop {
@@ -278,23 +280,24 @@
         }
 
         .remove-player {
-            background: var(--neon-red);
-            border: none;
+            background: #ff0044;
+            border: 2px solid white;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 10px;
+            font-size: 14px;
             font-weight: bold;
             transition: all 0.3s ease;
             position: absolute;
             top: 4px;
             right: 4px;
-            box-shadow: 0 2px 8px rgba(255, 51, 102, 0.4);
+            box-shadow: 0 2px 8px rgba(255, 0, 68, 0.8);
+            z-index: 20;
         }
 
         .player-number {
@@ -321,6 +324,14 @@
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(255, 51, 102, 0.6);
         }
+
+        .players-counter{
+            text-align:center;
+            color:#00ffff;
+            font-size:18px;
+            margin-bottom:10px;
+        }
+
         /* Wheel Section */
         .wheel-container {
             display: flex;
@@ -449,6 +460,19 @@
             opacity: 0.8;
         }
 
+        #createBracketBtn{
+            margin-top:15px;
+            padding:14px 30px;
+            font-size:18px;
+            background:linear-gradient(45deg,#00ff88,#00ffff);
+            border:none;
+            border-radius:10px;
+            color:black;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 0 20px #00ffff;
+        }
+
         /* Matches Section */
         .matches-list {
             display: flex;
@@ -507,16 +531,21 @@
             text-shadow: 0 0 10px var(--neon-pink);
         }
 
-        /* Tournament Bracket - Professional eSports Style */
+        /* Tournament Bracket - Fullscreen Modal Overlay */
         .tournament-bracket {
-            background: linear-gradient(135deg, rgba(22, 33, 62, 0.95), rgba(26, 26, 46, 0.95));
-            border-radius: 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(10, 10, 15, 0.98), rgba(22, 33, 62, 0.98));
+            border: none;
             padding: 30px;
-            margin-top: 20px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
             overflow-x: auto;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            z-index: 9999;
+            box-sizing: border-box;
         }
 
         .bracket-title {
@@ -862,6 +891,22 @@
                 gap: 8px;
             }
         }
+        
+        .matchBox{
+            border:2px solid #ff00ff;
+            padding:15px;
+            margin:15px;
+            border-radius:10px;
+            background:#0a0a0a;
+            text-align:center;
+            box-shadow:0 0 15px #ff00ff;
+        }
+
+        .vs{
+            color:#ff006e;
+            font-weight:bold;
+            margin:10px;
+        }
 
         /* Loading Animation */
         .loading {
@@ -997,10 +1042,16 @@
         <!-- Wheel Section -->
         <section class="card">
             <h2>عجلة الاختيار</h2>
+            <div class="players-counter">
+                إجمالي اللاعبين: <span id="playersCount">0</span> / 16
+            </div>
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
                 <canvas id="wheelCanvas" width="500" height="500"></canvas>
                 <button class="spin-button" id="spinButton" onclick="spinWheel()">🎡 تدوير العجلة</button>
+                <button id="createBracketBtn" onclick="createTournamentBracket()" style="display:none">
+                    إنشاء شجرة البطولة
+                </button>
             </div>
         </section>
 
@@ -1011,9 +1062,12 @@
         </section>
     </main>
 
-    <!-- Tournament Bracket -->
+    <!-- Tournament Bracket Modal -->
     <div class="tournament-bracket" id="tournamentBracket" style="display: none;">
-        <h2 class="bracket-title">?? ???? ??????? ??</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 class="bracket-title" style="margin-bottom: 0;">🏆 شجرة البطولة 🏆</h2>
+            <button onclick="document.getElementById('tournamentBracket').style.display='none'" style="background: linear-gradient(135deg, #ff006e, #ff3366); padding: 10px 20px; font-size: 14px; border-radius: 8px; cursor: pointer;">✕ إغلاق</button>
+        </div>
         <div class="bracket-container" id="bracketContainer"></div>
     </div>
 
@@ -1072,6 +1126,7 @@
             input.value = '';
             updatePlayersList();
             drawWheel();
+            document.getElementById("playersCount").innerText = players.length;
             showMessage(`تم إضافة ${name} بنجاح (${players.length}/32)`, 'success');
             
             // Check if we can create tournament bracket
@@ -1084,6 +1139,7 @@
             availablePlayers = availablePlayers.filter(p => p.id !== playerId);
             updatePlayersList();
             drawWheel();
+            document.getElementById("playersCount").innerText = players.length;
             showMessage(`تم حذف ${player.name} (${players.length}/32)`, 'info');
             
             // Check tournament readiness
@@ -1124,7 +1180,9 @@
                 progressHTML += `<div>المختارون: ${selectedCount}</div>`;
                 progressHTML += `</div>`;
                 
-                if (totalPlayers === 16) {
+                if (totalPlayers < 16) {
+                    progressHTML += `<div style="color: var(--neon-orange); font-weight: bold;">مزالك ${(16-totalPlayers)} لاعب للوصول لـ16</div>`;
+                } else if (totalPlayers === 16) {
                     progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">يمكن إنشاء بطولة 16 لاعب (8 مباريات)</div>`;
                 } else if (totalPlayers === 32) {
                     progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">يمكن إنشاء بطولة 32 لاعب (16 مباراة)</div>`;
@@ -1152,9 +1210,9 @@
                 const chip = document.createElement('div');
                 chip.className = 'player-chip';
                 chip.innerHTML = `
-                    <div class="player-number">#${index + 1}</div>
-                    <div style="color: ${player.color}; font-size: 18px; font-weight: bold;">👤</div>
-                    <div style="color: #ffffff; font-weight: 700; text-align: center; font-size: 13px; margin-top: 3px;">${player.name}</div>
+                    <div class="player-number">${index + 1}</div>
+                    <div style="color: ${player.color}; font-size: 28px; font-weight: bold;">👤</div>
+                    <div style="color: #ffffff; font-weight: 900; text-align: center; font-size: 22px; font-family: 'Cairo', 'Tajawal', sans-serif;">${player.name}</div>
                     <button class="remove-player" onclick="removePlayer(${player.id})">×</button>
                 `;
                 container.appendChild(chip);
@@ -1202,7 +1260,7 @@
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 20px "Orbitron", Arial, sans-serif';
+                ctx.font = 'bold 32px "Cairo", "Tajawal", Arial, sans-serif';
                 ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
                 ctx.shadowBlur = 6;
                 ctx.shadowOffsetX = 2;
@@ -1364,7 +1422,7 @@
                 // Add visual effect for selected player
                 animateWinnerSelection(winner.name);
                 
-                showMessage(`?? ?? ?????? ${winner.name}!`, 'success');
+                showMessage(`فاز اللاعب ${winner.name}!`, 'success');
                 
                 // Check if we can create matches (every 4 players = 1 match)
                 if (selectedPlayers.length % 4 === 0 && selectedPlayers.length >= 4) {
@@ -1376,11 +1434,15 @@
                 updatePlayersList();
                 
                 drawWheel();
+                
+                // Show create bracket button when drawing is complete
+                if(availablePlayers.length === 0){
+                    document.getElementById("createBracketBtn").style.display="block";
+                }
             }, 3000); // 3 seconds delay to show selection clearly
         }
 
         function showSelectionHighlight(player, index) {
-            // Create professional selection card
             const selectionCard = document.createElement('div');
             selectionCard.style.cssText = `
                 position: fixed;
@@ -1405,24 +1467,19 @@
             `;
             
             selectionCard.innerHTML = `
-                <div style="position: absolute; top: 20px; right: 20px; font-size: 3rem; animation: pulse 1s infinite;">??</div>
+                <div style="position: absolute; top: 20px; right: 20px; font-size: 3rem; animation: pulse 1s infinite;">👤</div>
                 <div style="font-size: 4rem; font-weight: 900; color: ${player.color}; text-shadow: 0 0 30px ${player.color}; margin-bottom: 20px; animation: glowText 2s ease-in-out infinite alternate;">${player.name}</div>
                 <div style="font-size: 1.8rem; color: #FFD700; text-shadow: 0 0 20px #FFD700; margin-bottom: 15px; animation: slideInUp 0.8s ease-out 0.3s both;">SELECTED</div>
                 <div style="font-size: 1.2rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 3px; animation: slideInUp 0.8s ease-out 0.5s both;">Player Added to Tournament</div>
                 <div style="position: absolute; bottom: 20px; display: flex; gap: 20px; animation: slideInUp 0.8s ease-out 0.7s both;">
-                    <div style="width: 60px; height: 60px; background: ${player.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px ${player.color};">?</div>
-                    <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px #FFD700;">??</div>
+                    <div style="width: 60px; height: 60px; background: ${player.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 20px ${player.color};">?</div>
+                    <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 20px #FFD700;">👤</div>
                 </div>
             `;
             
             document.body.appendChild(selectionCard);
-            
-            // Add professional particle effects
             createProfessionalParticles(player.color);
-            
-            // Add screen flash
             createScreenFlash(player.color);
-            
             setTimeout(() => selectionCard.remove(), 3000);
         }
         
@@ -1542,50 +1599,44 @@
             // Check tournament readiness after each match
             checkTournamentReadiness();
             
-            // Auto-create bracket for 16 players (8 matches)
-            if (matches.length === 8 && players.length === 16) {
-                createTournamentBracket();
-            }
-            // Auto-create bracket for 32 players (16 matches) 
-            else if (matches.length === 16 && players.length === 32) {
-                createTournamentBracket();
+            // إظهار زر إنشاء شجرة البطولة بعد اكتمال القرعة
+            if ((matches.length === 8 && players.length === 16) || (matches.length === 16 && players.length === 32)) {
+                showCreateBracketButton();
             }
         }
 
         function updateMatchesList() {
             const container = document.getElementById('matchesList');
             container.innerHTML = '';
-            
             if (matches.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #666;">?? ???? ??????? ???</div>';
+                container.innerHTML = '<div style="text-align: center; color: #666;">لا يوجد مباريات بعد</div>';
                 return;
             }
-            
             matches.forEach((match, index) => {
                 const matchCard = document.createElement('div');
                 matchCard.className = 'match-card';
                 matchCard.style.animation = `slideIn 0.5s ease ${index * 0.1}s both`;
                 matchCard.innerHTML = `
                     <div class="match-header">
-                        <span>?? ???????? ${index + 1}</span>
-                        ${match.winner ? '<span class="winner-badge">? ?? ????? ??????</span>' : '<span class="pending-badge">? ?? ?????? ??????</span>'}
+                        <span>مباراة رقم ${index + 1}</span>
+                        ${match.winner ? '<span class="winner-badge">الفريق الفائز</span>' : '<span class="pending-badge">بانتظار تحديد الفائز</span>'}
                     </div>
                     <div class="teams">
                         <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
                             <div class="team-header">
-                                <span class="team-color" style="color: ${match.team1[0].color}">?</span>
-                                ?????? 1
+                                <span class="team-color" style="color: ${match.team1[0].color}">👤</span>
+                                فريق 1
                             </div>
                             <div class="team-players">
                                 <div>${match.team1[0].name}</div>
                                 <div>${match.team1[1].name}</div>
                             </div>
                         </div>
-                        <div class="vs">??</div>
+                        <div class="vs">VS</div>
                         <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
                             <div class="team-header">
-                                <span class="team-color" style="color: ${match.team2[0].color}">?</span>
-                                ?????? 2
+                                <span class="team-color" style="color: ${match.team2[0].color}">👤</span>
+                                فريق 2
                             </div>
                             <div class="team-players">
                                 <div>${match.team2[0].name}</div>
@@ -1595,7 +1646,7 @@
                     </div>
                     ${match.winner ? `
                         <div class="match-winner">
-                            ?? ??????: ${match.winner[0].name} + ${match.winner[1].name}
+                            الفائز: ${match.winner[0].name} + ${match.winner[1].name}
                         </div>
                     ` : ''}
                 `;
@@ -1618,29 +1669,29 @@
             // Quarter Finals
             const quarterFinals = document.createElement('div');
             quarterFinals.className = 'bracket-round';
-            quarterFinals.innerHTML = `<h3 class="round-title">????? ????? (${quarterFinalMatches} ???????)</h3>`;
+            quarterFinals.innerHTML = `<h3 class="round-title">ربع النهائي (${quarterFinalMatches} مباريات)</h3>`;
             
             for (let i = 0; i < Math.min(matches.length, quarterFinalMatches); i++) {
                 const matchDiv = document.createElement('div');
                 matchDiv.className = 'bracket-match';
                 matchDiv.innerHTML = `
-                    <div class="match-header">???????? ${i + 1}</div>
+                    <div class="match-header">مباراة رقم ${i + 1}</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${matches[i].team1[0].color}">?</span>
+                            <span class="team-color" style="color: ${matches[i].team1[0].color}">👤</span>
                             ${matches[i].team1[0].name} + ${matches[i].team1[1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${matches[i].team2[0].color}">?</span>
+                            <span class="team-color" style="color: ${matches[i].team2[0].color}">👤</span>
                             ${matches[i].team2[0].name} + ${matches[i].team2[1].name}
                         </div>
                     </div>
                     <button class="winner-btn" onclick="setQuarterFinalWinner(${i}, 1)" style="background: ${matches[i].team1[0].color}">
-                        ???? 1 ????
+                        فريق 1 فاز
                     </button>
                     <button class="winner-btn" onclick="setQuarterFinalWinner(${i}, 2)" style="background: ${matches[i].team2[0].color}">
-                        ???? 2 ????
+                        فريق 2 فاز
                     </button>
                 `;
                 quarterFinals.appendChild(matchDiv);
@@ -1649,15 +1700,15 @@
             // Semi Finals
             const semiFinals = document.createElement('div');
             semiFinals.className = 'bracket-round';
-            semiFinals.innerHTML = `<h3 class="round-title">??? ??????? (${semiFinalMatches} ???????)</h3>`;
+            semiFinals.innerHTML = `<h3 class="round-title">نصف النهائي (${semiFinalMatches} مباريات)</h3>`;
             
             for (let i = 0; i < semiFinalMatches; i++) {
                 const matchDiv = document.createElement('div');
                 matchDiv.className = 'bracket-match semi-final-placeholder';
                 matchDiv.id = `semi-final-${i}`;
                 matchDiv.innerHTML = `
-                    <div class="match-header">??? ??????? ${i + 1}</div>
-                    <div class="winner-placeholder">?? ?????? ????????...</div>
+                    <div class="match-header">نصف النهائي ${i + 1}</div>
+                    <div class="winner-placeholder">في انتظار الفائزين...</div>
                 `;
                 semiFinals.appendChild(matchDiv);
             }
@@ -1665,14 +1716,30 @@
             // Final
             const final = document.createElement('div');
             final.className = 'bracket-round';
-            final.innerHTML = '<h3 class="round-title">???????</h3>';
+            final.innerHTML = '<h3 class="round-title">النهائي</h3>';
             
             const finalMatch = document.createElement('div');
             finalMatch.className = 'bracket-match final-placeholder';
             finalMatch.id = 'final-match';
             finalMatch.innerHTML = `
-                <div class="match-header">?? ???????? ???????? ??</div>
-                <div class="winner-placeholder">?? ?????? ????????...</div>
+                <div class="match-header">🏆 المباراة النهائية 🏆</div>
+                <div class="match-teams">
+                    <div class="bracket-team">
+                        <span class="team-color" style="color: ${tournamentWinners.semiFinals[0]?.[0]?.color || '#fff'}">👤</span>
+                        ${tournamentWinners.semiFinals[0]?.[0]?.name || 'فريق'} + ${tournamentWinners.semiFinals[0]?.[1]?.name || '1'}
+                    </div>
+                    <div class="bracket-vs">VS</div>
+                    <div class="bracket-team">
+                        <span class="team-color" style="color: ${tournamentWinners.semiFinals[1]?.[0]?.color || '#fff'}">👤</span>
+                        ${tournamentWinners.semiFinals[1]?.[0]?.name || 'فريق'} + ${tournamentWinners.semiFinals[1]?.[1]?.name || '2'}
+                    </div>
+                </div>
+                <button class="winner-btn champion-btn" onclick="setChampion(1)" style="background: ${tournamentWinners.semiFinals[0]?.[0]?.color || '#333'}">
+                    🏆 فريق 1 فاز 🏆
+                </button>
+                <button class="winner-btn champion-btn" onclick="setChampion(2)" style="background: ${tournamentWinners.semiFinals[1]?.[0]?.color || '#333'}">
+                    🏆 فريق 2 فاز 🏆
+                </button>
             `;
             final.appendChild(finalMatch);
             
@@ -1680,7 +1747,7 @@
             container.appendChild(semiFinals);
             container.appendChild(final);
             
-            showMessage(`?? ????? ???? ????? ${is16PlayerTournament ? '16' : '32'} ????! ???? ???????? ?? ????? ?????`, 'success');
+            showMessage(`تم إنشاء شجرة بطولة لـ ${is16PlayerTournament ? '16' : '32'} لاعب! حظاً موفقاً لجميع الفرق`, 'success');
         }
 
         // Utility Functions
@@ -1720,12 +1787,33 @@
             match.winner = winner;
             tournamentWinners.quarterFinals.push(winner);
             
+            // Update the match display immediately
+            const matchDivs = document.querySelectorAll('.bracket-match');
+            const currentMatchDiv = matchDivs[matchIndex];
+            const buttons = currentMatchDiv.querySelectorAll('button');
+            
+            // Disable buttons and show winner
+            buttons.forEach(btn => btn.disabled = true);
+            buttons.forEach(btn => btn.style.opacity = '0.5');
+            
+            const winnerDiv = document.createElement('div');
+            winnerDiv.style.cssText = `
+                color: #00ff88;
+                font-weight: bold;
+                margin-top: 10px;
+                font-size: 16px;
+                text-shadow: 0 0 10px #00ff88;
+                text-align: center;
+            `;
+            winnerDiv.textContent = `الفائز: ${winner[0].name} + ${winner[1].name}`;
+            currentMatchDiv.appendChild(winnerDiv);
+            
             // Update semi finals
             updateSemiFinals();
             
             // Animate winner
-            animateWinnerSelection(`???? ${teamNumber} ????!`);
-            showMessage(`?? ????? ?????? ?? ???????? ${matchIndex + 1}`, 'success');
+            animateWinnerSelection(`فريق ${teamNumber} فاز!`);
+            showMessage(`تم تحديد الفائز في المباراة ${matchIndex + 1}`, 'success');
         }
 
         function updateSemiFinals() {
@@ -1733,46 +1821,46 @@
                 // Update semi final 1
                 const semi1 = document.getElementById('semi-final-0');
                 semi1.innerHTML = `
-                    <div class="match-header">??? ??????? 1</div>
+                    <div class="match-header">نصف النهائي 1</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[0][0].color}">?</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[0][0].color}">👤</span>
                             ${tournamentWinners.quarterFinals[0][0].name} + ${tournamentWinners.quarterFinals[0][1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[1][0].color}">?</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[1][0].color}">👤</span>
                             ${tournamentWinners.quarterFinals[1][0].name} + ${tournamentWinners.quarterFinals[1][1].name}
                         </div>
                     </div>
                     <button class="winner-btn" onclick="setSemiFinalWinner(0, 1)" style="background: ${tournamentWinners.quarterFinals[0][0].color}">
-                        ???? 1 ????
+                        فريق 1 فاز
                     </button>
                     <button class="winner-btn" onclick="setSemiFinalWinner(0, 2)" style="background: ${tournamentWinners.quarterFinals[1][0].color}">
-                        ???? 2 ????
+                        فريق 2 فاز
                     </button>
                 `;
                 
                 // Update semi final 2
                 const semi2 = document.getElementById('semi-final-1');
                 semi2.innerHTML = `
-                    <div class="match-header">??? ??????? 2</div>
+                    <div class="match-header">نصف النهائي 2</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[2][0].color}">?</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[2][0].color}">👤</span>
                             ${tournamentWinners.quarterFinals[2][0].name} + ${tournamentWinners.quarterFinals[2][1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[3][0].color}">?</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[3][0].color}">👤</span>
                             ${tournamentWinners.quarterFinals[3][0].name} + ${tournamentWinners.quarterFinals[3][1].name}
                         </div>
                     </div>
                     <button class="winner-btn" onclick="setSemiFinalWinner(1, 1)" style="background: ${tournamentWinners.quarterFinals[2][0].color}">
-                        ???? 1 ????
+                        فريق 1 فاز
                     </button>
                     <button class="winner-btn" onclick="setSemiFinalWinner(1, 2)" style="background: ${tournamentWinners.quarterFinals[3][0].color}">
-                        ???? 2 ????
+                        فريق 2 فاز
                     </button>
                 `;
             }
@@ -1783,34 +1871,55 @@
             const winner = tournamentWinners.quarterFinals[winnerIndex];
             tournamentWinners.semiFinals.push(winner);
             
+            // Update semi final display immediately
+            const semiDivs = document.querySelectorAll('#semi-final-0, #semi-final-1');
+            const currentSemiDiv = semiDivs[semiIndex];
+            const buttons = currentSemiDiv.querySelectorAll('button');
+            
+            // Disable buttons and show winner
+            buttons.forEach(btn => btn.disabled = true);
+            buttons.forEach(btn => btn.style.opacity = '0.5');
+            
+            const winnerDiv = document.createElement('div');
+            winnerDiv.style.cssText = `
+                color: #00ff88;
+                font-weight: bold;
+                margin-top: 10px;
+                font-size: 16px;
+                text-shadow: 0 0 10px #00ff88;
+                text-align: center;
+            `;
+            winnerDiv.textContent = `الفائز: ${winner[0].name} + ${winner[1].name}`;
+            currentSemiDiv.appendChild(winnerDiv);
+            
             // Update final
             updateFinal();
             
-            animateWinnerSelection(`?????? ??? ??????? ${semiIndex + 1}!`);
-            showMessage(`?? ????? ?????? ?? ??? ??????? ${semiIndex + 1}`, 'success');
+            animateWinnerSelection(`نصف نهائي المباراة ${semiIndex + 1}!`);
+            showMessage(`تم تحديد الفائز في نصف النهائي ${semiIndex + 1}`, 'success');
         }
 
         function updateFinal() {
             if (tournamentWinners.semiFinals.length === 2) {
                 const final = document.getElementById('final-match');
                 final.innerHTML = `
-                    <div class="match-header">?? ???????? ???????? ??</div>
+                    <div class="match-header">🏆 المباراة النهائية 🏆</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[0][0].color}">?</span>
+                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[0][0].color}">👤</span>
                             ${tournamentWinners.semiFinals[0][0].name} + ${tournamentWinners.semiFinals[0][1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[1][0].color}">?</span>
+                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[1][0].color}">👤</span>
                             ${tournamentWinners.semiFinals[1][0].name} + ${tournamentWinners.semiFinals[1][1].name}
                         </div>
                     </div>
                     <button class="winner-btn champion-btn" onclick="setChampion(1)" style="background: ${tournamentWinners.semiFinals[0][0].color}">
-                        ?? ???? 1 ???? ??
+                        🏆 فريق 1 فاز 🏆
                     </button>
                     <button class="winner-btn champion-btn" onclick="setChampion(2)" style="background: ${tournamentWinners.semiFinals[1][0].color}">
-                        ?? ???? 2 ???? ??
+                        🏆 فريق 2 فاز 🏆
                     </button>
                 `;
             }
@@ -1820,9 +1929,30 @@
             const champion = teamNumber === 1 ? tournamentWinners.semiFinals[0] : tournamentWinners.semiFinals[1];
             tournamentWinners.final = champion;
             
+            // Update final display immediately
+            const finalDiv = document.getElementById('final-match');
+            const buttons = finalDiv.querySelectorAll('button');
+            
+            // Disable buttons and show champion
+            buttons.forEach(btn => btn.disabled = true);
+            buttons.forEach(btn => btn.style.opacity = '0.5');
+            
+            const championDiv = document.createElement('div');
+            championDiv.style.cssText = `
+                color: #FFD700;
+                font-weight: bold;
+                margin-top: 15px;
+                font-size: 20px;
+                text-shadow: 0 0 15px #FFD700;
+                text-align: center;
+                animation: glow 1s ease-in-out infinite alternate;
+            `;
+            championDiv.textContent = `🏆 البطل: ${champion[0].name} + ${champion[1].name}`;
+            finalDiv.appendChild(championDiv);
+            
             // Show champion celebration
             showChampionCelebration(champion);
-            showMessage('?? ?? ????? ??? ???????! ??', 'success');
+            showMessage('تم تحديد البطل!', 'success');
         }
 
         function showChampionCelebration(champion) {
@@ -1843,12 +1973,12 @@
             
             celebration.innerHTML = `
                 <div style="text-align: center; animation: championBounce 1s ease infinite alternate;">
-                    <div style="font-size: 4rem; margin-bottom: 20px;">??</div>
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🏆</div>
                     <h1 style="color: #FFD700; font-size: 3rem; text-shadow: 0 0 30px #FFD700; margin: 0;">
-                        ?????!
+                        البطـــل!
                     </h1>
                     <div style="color: #fff; font-size: 2rem; margin-top: 20px;">
-                        <span style="color: ${champion[0].color}">?</span>
+                        <span style="color: ${champion[0].color}">👤</span>
                         ${champion[0].name} + ${champion[1].name}
                     </div>
                     <button onclick="this.parentElement.parentElement.remove()" style="
@@ -1862,7 +1992,7 @@
                         font-weight: bold;
                         cursor: pointer;
                     ">
-                        ?????
+                        إغلاق
                     </button>
                 </div>
             `;

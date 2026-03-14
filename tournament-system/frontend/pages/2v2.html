@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بطولة 2 ضد 2 | Tournament System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bracket.css">
+    <style>
+        .page-main { display:grid; grid-template-columns: 300px 1fr; gap:16px; padding:16px; height:calc(100vh - 66px); overflow:hidden; }
+        .team-card { background:rgba(0,0,0,0.4); border:1px solid rgba(168,85,247,0.3); border-radius:10px; padding:12px; margin-bottom:8px; }
+        .team-card h4 { color:var(--neon-purple); font-size:12px; letter-spacing:1px; margin-bottom:8px; }
+        .team-players-list { display:flex; flex-direction:column; gap:4px; }
+        .team-player-item { display:flex; align-items:center; gap:6px; font-size:13px; padding:4px 8px; border-radius:6px; background:rgba(255,255,255,0.04); }
+        .sel-indicator { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+        @media(max-width:800px){ .page-main{ grid-template-columns:1fr; height:auto; overflow:auto; } }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <a href="../index.html" class="back-btn">← رجوع</a>
+    <h1 class="header-title gradient-text">🤝 بطولة 2 ضد 2</h1>
+    <span class="status-badge badge-active">نشط</span>
+</header>
+
+<div id="toastContainer"></div>
+
+<main class="page-main">
+
+    <!-- Left: Players + Teams -->
+    <section class="panel">
+        <div class="panel-title">👥 اللاعبون</div>
+        <div class="input-group">
+            <input type="text" id="playerNameInput" class="neon-input" placeholder="اسم اللاعب..." maxlength="20" autocomplete="off">
+            <button id="addPlayerBtn" class="btn btn-primary" onclick="addPlayer()">+</button>
+        </div>
+        <div class="counter-badge"><span>👥</span><span id="playersCount">0</span> لاعبين</div>
+        <div class="panel-body">
+            <div class="players-grid" id="playersGrid"></div>
+        </div>
+    </section>
+
+    <!-- Right: Teams + Bracket -->
+    <section class="panel">
+        <div class="panel-title">🤝 الفرق والبطولة</div>
+
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <button class="btn btn-success" onclick="autoGenerateTeams()" style="flex:1">⚡ توزيع عشوائي للفرق</button>
+            <button class="btn btn-gold" onclick="openBracket()" id="bracketBtn" disabled style="flex:1">🏆 شجرة البطولة</button>
+            <button class="btn btn-danger" onclick="resetAll()" style="font-size:11px;padding:8px 12px">♻️</button>
+        </div>
+
+        <div style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:10px;" id="teamStatus">
+            أضف 4 لاعبين على الأقل لتوزيع الفرق
+        </div>
+
+        <div class="panel-body">
+            <div id="teamsList">
+                <div class="empty-state"><span>🤝</span>الفرق ستظهر هنا بعد التوزيع</div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Bracket Modal -->
+<div class="modal-overlay hidden" id="bracketModal">
+    <div class="modal-box" style="max-width:95vw;width:auto;">
+        <div class="modal-header">
+            <h2 class="gradient-text">🏆 شجرة البطولة 2v2</h2>
+            <button class="modal-close" onclick="closeModal('bracketModal')">✕</button>
+        </div>
+        <div class="bracket-scroll">
+            <div class="bracket-container" id="bracketContainer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Champion -->
+<div class="champion-overlay hidden" id="championOverlay">
+    <div class="champion-content">
+        <span class="champion-trophy">🏆</span>
+        <div class="champion-label">الفريق البطل</div>
+        <div class="champion-name" id="championName">—</div>
+        <button class="btn btn-gold" onclick="hideChampion()">🎉 رائع!</button>
+    </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/players.js"></script>
+<script src="../js/bracket.js"></script>
+
+<script>
+    let teams2v2 = []; // [{name, color, player1, player2}]
+
+    // Override onPlayersChanged to not call wheel/matches
+    function onPlayersChanged() {
+        updatePlayersCount();
+        updateTeamStatus();
+    }
+
+    function autoGenerateTeams() {
+        if (players.length < 4) {
+            showToast('يجب إضافة 4 لاعبين على الأقل', 'error');
+            return;
+        }
+        if (players.length % 2 !== 0) {
+            showToast(`عدد اللاعبين يجب أن يكون زوجياً (الحالي: ${players.length})`, 'warning');
+        }
+
+        const shuffled = [...players].sort(() => Math.random() - 0.5);
+        teams2v2 = [];
+
+        for (let i = 0; i < shuffled.length - 1; i += 2) {
+            const p1 = shuffled[i];
+            const p2 = shuffled[i + 1];
+            teams2v2.push({
+                id: i / 2,
+                name: `${p1.name} & ${p2.name}`,
+                color: p1.color,
+                player1: p1.name,
+                player2: p2.name
+            });
+        }
+
+        renderTeams();
+        updateTeamStatus();
+        showToast(`تم إنشاء ${teams2v2.length} فريق!`, 'success');
+
+        const bracketBtn = document.getElementById('bracketBtn');
+        if (bracketBtn) bracketBtn.disabled = teams2v2.length < 2;
+    }
+
+    function renderTeams() {
+        const container = document.getElementById('teamsList');
+        if (teams2v2.length === 0) {
+            container.innerHTML = '<div class="empty-state"><span>🤝</span>الفرق ستظهر هنا</div>';
+            return;
+        }
+        container.innerHTML = teams2v2.map((t, i) => `
+            <div class="team-card">
+                <h4 style="color:${t.color}">فريق ${i + 1}</h4>
+                <div class="team-players-list">
+                    <div class="team-player-item">
+                        <span class="sel-indicator" style="background:${t.color}"></span>${t.player1}
+                    </div>
+                    <div class="team-player-item">
+                        <span class="sel-indicator" style="background:${t.color}80"></span>${t.player2}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateTeamStatus() {
+        const el = document.getElementById('teamStatus');
+        if (el) {
+            if (players.length < 4) el.textContent = `أضف ${4 - players.length} لاعبين على الأقل`;
+            else if (teams2v2.length === 0) el.textContent = 'اضغط "توزيع عشوائي" لإنشاء الفرق';
+            else el.textContent = `${teams2v2.length} فرق جاهزة للبطولة`;
+        }
+    }
+
+    function getTeamsForBracket() {
+        return teams2v2;
+    }
+
+    function resetAll() {
+        teams2v2 = [];
+        renderTeams();
+        updateTeamStatus();
+        const bracketBtn = document.getElementById('bracketBtn');
+        if (bracketBtn) bracketBtn.disabled = true;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPlayers();
+    });
+</script>
+</body>
+</html>
