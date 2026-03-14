@@ -970,13 +970,43 @@
             ctx.lineWidth = 2;
             ctx.stroke();
             
-            // Draw selection indicator line at top (where pointer points)
+            // Draw beautiful selection indicator line at top (where pointer points)
             ctx.beginPath();
             ctx.moveTo(centerX, centerY - radius);
-            ctx.lineTo(centerX, centerY - radius - 10);
-            ctx.strokeStyle = '#FFD700';
-            ctx.lineWidth = 4;
+            ctx.lineTo(centerX, centerY - radius - 25);
+            
+            // Create gradient for beautiful line
+            const gradient = ctx.createLinearGradient(centerX, centerY - radius, centerX, centerY - radius - 25);
+            gradient.addColorStop(0, '#FFD700');
+            gradient.addColorStop(0.5, '#FFA500');
+            gradient.addColorStop(1, '#FF6347');
+            
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 10;
             ctx.stroke();
+            
+            // Add decorative dots
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - radius - 30, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = '#FFD700';
+            ctx.shadowColor = '#FFD700';
+            ctx.shadowBlur = 15;
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(centerX - 10, centerY - radius - 35, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#FFA500';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(centerX + 10, centerY - radius - 35, 3, 0, 2 * Math.PI);
+            ctx.fillStyle = '#FF6347';
+            ctx.shadowBlur = 10;
+            ctx.fill();
             
             // Highlight the segment at the pointer position
             if (availablePlayers.length > 0) {
