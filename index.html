@@ -6,6 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بطولة 2 ضد 2 - نظام القرعة الاحترافي</title>
+    
+    <!-- Professional Gaming Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -21,29 +25,40 @@
             --neon-purple: #ff00ff;
             --neon-pink: #ff006e;
             --neon-green: #00ff88;
+            --neon-red: #ff3366;
+            --neon-orange: #ff8800;
             --text-primary: #ffffff;
             --text-secondary: #b0b0b0;
+            --text-muted: #666666;
             --shadow-neon: 0 0 20px rgba(0, 255, 255, 0.5);
             --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --font-primary: 'Orbitron', 'Segoe UI', monospace;
+            --font-secondary: 'Rajdhani', 'Segoe UI', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-secondary);
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         /* Header */
         header {
             background: linear-gradient(90deg, var(--bg-card), var(--bg-secondary), var(--bg-card));
-            padding: 20px;
+            padding: 15px 20px;
             text-align: center;
             border-bottom: 2px solid var(--neon-cyan);
             box-shadow: var(--shadow-neon);
             position: relative;
             overflow: hidden;
+            height: 80px;
+            display: flex;
+            align-items: center;
         }
 
         header::before {
@@ -88,13 +103,17 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 800;
             background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
             animation: glow 2s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
         @keyframes glow {
@@ -102,29 +121,29 @@
             to { filter: brightness(1.2); }
         }
 
-        /* Main Layout */
+        /* Main Layout - Full Screen Grid */
         main {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 40px 30px;
+            height: calc(100vh - 80px);
             display: grid;
-            grid-template-columns: 1fr 1.5fr 1fr;
-            gap: 40px;
-            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.05) 0%, transparent 70%);
+            grid-template-columns: 1fr 1.3fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.03) 0%, transparent 70%);
+            overflow: hidden;
         }
 
-        /* Cards */
+        /* Cards - Professional eSports Style */
         .card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: var(--shadow-card);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.9), rgba(26, 26, 46, 0.9));
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
-            min-height: 400px;
+            height: 100%;
             display: flex;
             flex-direction: column;
         }
@@ -146,37 +165,41 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(0, 255, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             border-color: var(--neon-cyan);
         }
 
         .card h2 {
+            font-family: var(--font-primary);
             color: var(--neon-cyan);
-            margin-bottom: 30px;
-            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
             text-align: center;
             text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
-            font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        /* Players Section */
+        /* Players Section - Professional Player Cards */
         .player-input {
             display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         input[type="text"] {
             flex: 1;
-            padding: 15px;
-            background: var(--bg-secondary);
+            padding: 12px 16px;
+            background: rgba(26, 26, 46, 0.8);
             border: 2px solid rgba(0, 255, 255, 0.3);
-            border-radius: 12px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.3s ease;
+            font-family: var(--font-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         input[type="text"]:focus {
@@ -186,17 +209,19 @@
         }
 
         button {
-            padding: 15px 25px;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-weight: bold;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
         }
 
         button:hover {
@@ -209,29 +234,33 @@
         }
 
         .players-list {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 12px;
-            max-height: 350px;
             overflow-y: auto;
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .player-chip {
-            background: linear-gradient(45deg, var(--bg-secondary), var(--bg-card));
-            border: 1px solid var(--neon-cyan);
-            padding: 8px 15px;
-            border-radius: 25px;
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.9), rgba(26, 26, 46, 0.9));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 10px 12px;
+            border-radius: 12px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             animation: fadeIn 0.3s ease;
-            box-shadow: 0 2px 15px rgba(0, 255, 255, 0.3);
-            font-size: 14px;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+            font-size: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-height: 80px;
+            justify-content: center;
         }
 
         @keyframes fadeIn {
@@ -241,11 +270,12 @@
 
         .player-chip:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.4);
+            border-color: var(--neon-cyan);
         }
 
         .remove-player {
-            background: var(--neon-pink);
+            background: var(--neon-red);
             border: none;
             border-radius: 50%;
             width: 20px;
@@ -255,13 +285,19 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 12px;
+            font-size: 10px;
+            font-weight: bold;
             transition: all 0.3s ease;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            box-shadow: 0 2px 8px rgba(255, 51, 102, 0.4);
         }
 
         .remove-player:hover {
             background: #ff0044;
-            transform: rotate(90deg);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 51, 102, 0.6);
         }
 
         /* Wheel Section */
@@ -365,11 +401,16 @@
         }
 
         .spin-button {
-            background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan));
-            padding: 15px 40px;
-            font-size: 18px;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            padding: 16px 40px;
+            font-family: var(--font-primary);
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 6px 25px rgba(0, 255, 136, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
         }
 
         .spin-button:hover:not(:disabled) {
@@ -440,33 +481,38 @@
             text-shadow: 0 0 10px var(--neon-pink);
         }
 
-        /* Tournament Bracket */
+        /* Tournament Bracket - Professional eSports Style */
         .tournament-bracket {
-            background: var(--bg-card);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            border: 1px solid var(--neon-green);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.95), rgba(26, 26, 46, 0.95));
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             overflow-x: auto;
+            backdrop-filter: blur(10px);
         }
 
         .bracket-title {
+            font-family: var(--font-primary);
             color: var(--neon-green);
             text-align: center;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            text-shadow: 0 0 15px var(--neon-green);
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .bracket-container {
             display: flex;
-            gap: 30px;
+            gap: 40px;
             justify-content: center;
             align-items: flex-start;
             overflow-x: auto;
             padding: 20px 0;
-            min-height: 400px;
+            min-height: 300px;
         }
 
         .bracket-round {
@@ -478,39 +524,50 @@
         }
 
         .round-title {
+            font-family: var(--font-primary);
             color: var(--neon-cyan);
             margin-bottom: 20px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             position: sticky;
             top: 0;
-            background: var(--bg-card);
+            background: rgba(22, 33, 62, 0.9);
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 8px;
             z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
         .bracket-match {
-            background: var(--bg-secondary);
-            border: 1px solid var(--neon-purple);
-            border-radius: 8px;
-            padding: 12px;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px;
             margin-bottom: 15px;
             width: 100%;
             max-width: 220px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(255, 0, 255, 0.2);
         }
 
         .bracket-match:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.4);
+            border-color: var(--neon-purple);
         }
 
         .match-header {
+            font-family: var(--font-primary);
             color: var(--neon-cyan);
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-weight: 600;
+            margin-bottom: 12px;
             text-align: center;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .match-teams {
@@ -521,40 +578,50 @@
         }
 
         .bracket-team {
-            background: var(--bg-primary);
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid var(--neon-cyan);
-            font-size: 12px;
+            background: rgba(10, 10, 15, 0.8);
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            font-size: 11px;
             display: flex;
             align-items: center;
             gap: 5px;
+            font-family: var(--font-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .team-color {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
         }
 
         .bracket-vs {
             color: var(--neon-pink);
-            font-weight: bold;
+            font-weight: 700;
             text-align: center;
-            font-size: 14px;
-            text-shadow: 0 0 5px var(--neon-pink);
+            font-size: 12px;
+            text-shadow: 0 0 8px var(--neon-pink);
+            font-family: var(--font-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .winner-btn {
             width: 100%;
-            padding: 8px;
-            margin-top: 5px;
+            padding: 8px 12px;
+            margin-top: 8px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             color: white;
-            font-weight: bold;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.3);
         }
 
         .winner-btn:hover {
@@ -620,12 +687,24 @@
             background: var(--neon-purple);
         }
 
-        /* Responsive Design */
+        /* Professional Responsive Design */
+        @media (max-width: 1400px) {
+            main {
+                grid-template-columns: 1fr 1.2fr 1fr;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+
         @media (max-width: 1200px) {
             main {
                 grid-template-columns: 1fr 1fr;
-                gap: 30px;
-                padding: 30px 20px;
+                gap: 15px;
+                padding: 15px;
             }
 
             .bracket-container {
@@ -633,14 +712,18 @@
                 align-items: center;
                 gap: 20px;
             }
+            
+            .tournament-bracket {
+                grid-column: 1 / -1;
+            }
         }
 
         @media (max-width: 1024px) {
             main {
                 grid-template-columns: 1fr;
-                gap: 25px;
-                padding: 25px 15px;
-                height: auto;
+                gap: 15px;
+                padding: 15px;
+                height: calc(100vh - 80px);
                 overflow-y: auto;
             }
 
@@ -649,13 +732,13 @@
             }
 
             .card {
-                padding: 30px;
-                min-height: 350px;
+                padding: 20px;
+                min-height: auto;
             }
 
             #wheelCanvas {
-                width: 400px !important;
-                height: 400px !important;
+                width: 350px !important;
+                height: 350px !important;
             }
 
             .bracket-container {
@@ -672,31 +755,31 @@
         }
 
         @media (max-width: 768px) {
+            header {
+                height: auto;
+                padding: 10px 15px;
+            }
+
             .header-content {
                 flex-direction: column;
-                gap: 15px;
+                gap: 10px;
             }
 
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
 
             .card {
-                padding: 25px;
-                min-height: 320px;
+                padding: 15px;
             }
 
             #wheelCanvas {
-                width: 350px !important;
-                height: 350px !important;
+                width: 300px !important;
+                height: 300px !important;
             }
 
             .players-list {
-                max-height: 250px;
-            }
-
-            .matches-list {
-                max-height: 350px;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
 
             .bracket-container {
@@ -710,43 +793,47 @@
 
         @media (max-width: 480px) {
             header {
-                padding: 20px 15px;
+                padding: 10px;
             }
 
             main {
-                padding: 15px 10px;
-                gap: 20px;
+                padding: 10px;
+                gap: 10px;
             }
 
             .card {
-                padding: 20px;
-                min-height: 280px;
+                padding: 12px;
             }
 
             h1 {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
 
             h2 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
 
             #wheelCanvas {
-                width: 300px !important;
-                height: 300px !important;
+                width: 250px !important;
+                height: 250px !important;
             }
 
             .spin-button {
-                padding: 12px 25px;
-                font-size: 16px;
+                padding: 12px 20px;
+                font-size: 14px;
             }
 
             .tournament-bracket {
-                padding: 20px;
+                padding: 15px;
             }
 
             .bracket-container {
-                padding: 15px 0;
+                padding: 10px 0;
+            }
+            
+            .players-list {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
             }
         }
 
@@ -765,26 +852,44 @@
             to { transform: rotate(360deg); }
         }
 
-        /* New Selection Animations */
-        @keyframes selectionPulse {
+        /* Professional Selection Animations */
+        @keyframes selectionCardAppear {
             0% {
-                transform: translate(-50%, -50%) scale(0);
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg);
                 opacity: 0;
             }
-            20% {
-                transform: translate(-50%, -50%) scale(1.3);
-                opacity: 1;
-            }
-            40% {
-                transform: translate(-50%, -50%) scale(1.1);
-                opacity: 1;
-            }
-            60% {
-                transform: translate(-50%, -50%) scale(1.2);
+            50% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
                 opacity: 1;
             }
             100% {
-                transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glowText {
+            from { 
+                filter: brightness(1) drop-shadow(0 0 20px currentColor);
+                transform: scale(1);
+            }
+            to { 
+                filter: brightness(1.3) drop-shadow(0 0 40px currentColor);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes professionalParticle {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                transform: scale(1) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0) rotate(360deg) translateY(-100px);
                 opacity: 0;
             }
         }
@@ -1017,8 +1122,8 @@
                 const chip = document.createElement('div');
                 chip.className = 'player-chip';
                 chip.innerHTML = `
-                    <span style="color: ${player.color}">●</span>
-                    <span>${player.name}</span>
+                    <div style="color: ${player.color}; font-size: 16px;">●</div>
+                    <div style="color: #ffffff; font-weight: 500; text-align: center; font-size: 11px;">${player.name}</div>
                     <button class="remove-player" onclick="removePlayer(${player.id})">×</button>
                 `;
                 container.appendChild(chip);
@@ -1065,18 +1170,25 @@
                 // Enhanced text rendering with better font
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-                ctx.shadowBlur = 4;
-                ctx.shadowOffsetX = 1;
-                ctx.shadowOffsetY = 1;
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 20px "Orbitron", Arial, sans-serif';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
                 
-                // Draw text with outline for better readability
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.9)';
-                ctx.lineWidth = 3;
+                // Draw text with strong outline for maximum readability
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.95)';
+                ctx.lineWidth = 4;
                 ctx.strokeText(player.name, radius / 2, 0);
                 ctx.fillText(player.name, radius / 2, 0);
+                
+                // Add glow effect for better visibility
+                ctx.shadowColor = player.color;
+                ctx.shadowBlur = 8;
+                ctx.strokeStyle = player.color;
+                ctx.lineWidth = 1;
+                ctx.strokeText(player.name, radius / 2, 0);
                 
                 // Reset shadow
                 ctx.shadowColor = 'transparent';
@@ -1150,8 +1262,8 @@
 
     document.querySelector('.wheel-container').classList.add('spinning');
 
-    const spinDuration = 6000; // Longer duration for more spinning
-    const spins = 12 + Math.random() * 8; // 12-20 rotations (lots of spinning!)
+    const spinDuration = 5000; // Optimized duration
+    const spins = 8 + Math.random() * 6; // 8-14 rotations
 
     const startRotation = currentRotation;
     const targetRotation = startRotation + spins * 2 * Math.PI;
@@ -1159,17 +1271,17 @@
     const startTime = performance.now();
 
     const button = document.getElementById('spinButton');
-    button.textContent = "🎡 العجلة تدور بقوة...";
-    button.style.background = "linear-gradient(45deg,#FFD700,#FFA500,#FF6347)";
+    button.textContent = "🎡 SPINNING...";
+    button.style.background = "linear-gradient(135deg, #FFD700, #FFA500, #FF6347)";
 
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
+    // Professional easing function
+    function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
     }
 
     function animate(time) {
-
         const progress = Math.min((time - startTime) / spinDuration, 1);
-        const eased = easeOutCubic(progress);
+        const eased = easeOutQuart(progress);
 
         currentRotation = startRotation + (targetRotation - startRotation) * eased;
 
@@ -1178,16 +1290,11 @@
         if (progress < 1) {
             requestAnimationFrame(animate);
         } else {
-
             isSpinning = false;
-
             document.querySelector('.wheel-container').classList.remove('spinning');
-
-            button.textContent = "دور العجلة";
+            button.textContent = "SPIN WHEEL";
             button.style.background = "";
-
             document.getElementById('spinButton').disabled = false;
-
             selectWinner();
         }
     }
@@ -1244,44 +1351,77 @@
         }
 
         function showSelectionHighlight(player, index) {
-            // Create an amazing selection highlight with multiple effects
-            const highlight = document.createElement('div');
-            highlight.style.cssText = `
+            // Create professional selection card
+            const selectionCard = document.createElement('div');
+            selectionCard.style.cssText = `
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 7rem;
-                font-weight: 900;
-                color: ${player.color};
-                text-shadow: 
-                    0 0 40px ${player.color},
-                    0 0 80px ${player.color},
-                    0 0 120px ${player.color},
-                    0 0 160px ${player.color},
-                    0 0 200px ${player.color};
+                transform: translate(-50%, -50%) scale(0);
+                width: 600px;
+                height: 400px;
+                background: linear-gradient(135deg, rgba(22, 33, 62, 0.95), rgba(26, 26, 46, 0.95));
+                border: 2px solid ${player.color};
+                border-radius: 20px;
+                box-shadow: 0 0 60px ${player.color}, 0 20px 60px rgba(0, 0, 0, 0.8);
                 z-index: 3000;
-                animation: selectionPulse 3s ease-out forwards;
+                animation: selectionCardAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
                 pointer-events: none;
-                text-align: center;
-                font-family: "Segoe UI", Arial, sans-serif;
+                backdrop-filter: blur(20px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-primary);
             `;
-            highlight.innerHTML = `
-                <div style="animation: bounceIn 1s ease-out">🎯</div>
-                <div style="font-size: 5rem; margin-top: 40px; animation: slideInUp 1s ease-out 0.3s both; text-shadow: 0 0 60px ${player.color}; font-weight: 900;">${player.name}</div>
-                <div style="font-size: 2.5rem; margin-top: 30px; animation: slideInUp 1s ease-out 0.6s both; color: #FFD700; text-shadow: 0 0 30px #FFD700;">✨ تم اختياره! ✨</div>
-                <div style="font-size: 2rem; margin-top: 20px; animation: slideInUp 1s ease-out 0.9s both; color: #fff; text-shadow: 0 0 20px #fff;">🏆 لاعب محظوظ 🏆</div>
-                <div style="font-size: 1.5rem; margin-top: 15px; animation: slideInUp 1s ease-out 1.2s both; color: #00ff88; text-shadow: 0 0 15px #00ff88;">⭐ انضم للبطولة ⭐</div>
+            
+            selectionCard.innerHTML = `
+                <div style="position: absolute; top: 20px; right: 20px; font-size: 3rem; animation: pulse 1s infinite;">🎯</div>
+                <div style="font-size: 4rem; font-weight: 900; color: ${player.color}; text-shadow: 0 0 30px ${player.color}; margin-bottom: 20px; animation: glowText 2s ease-in-out infinite alternate;">${player.name}</div>
+                <div style="font-size: 1.8rem; color: #FFD700; text-shadow: 0 0 20px #FFD700; margin-bottom: 15px; animation: slideInUp 0.8s ease-out 0.3s both;">SELECTED</div>
+                <div style="font-size: 1.2rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 3px; animation: slideInUp 0.8s ease-out 0.5s both;">Player Added to Tournament</div>
+                <div style="position: absolute; bottom: 20px; display: flex; gap: 20px; animation: slideInUp 0.8s ease-out 0.7s both;">
+                    <div style="width: 60px; height: 60px; background: ${player.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px ${player.color};">⚡</div>
+                    <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px #FFD700;">🏆</div>
+                </div>
             `;
-            document.body.appendChild(highlight);
             
-            // Add particle effects
-            createParticleEffect(highlight);
+            document.body.appendChild(selectionCard);
             
-            // Add screen flash effect
+            // Add professional particle effects
+            createProfessionalParticles(player.color);
+            
+            // Add screen flash
             createScreenFlash(player.color);
             
-            setTimeout(() => highlight.remove(), 4000);
+            setTimeout(() => selectionCard.remove(), 3000);
+        }
+        
+        function createProfessionalParticles(color) {
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                const randomX = Math.random() * window.innerWidth;
+                const randomY = Math.random() * window.innerHeight;
+                const randomSize = Math.random() * 6 + 2;
+                
+                particle.style.cssText = `
+                    position: fixed;
+                    width: ${randomSize}px;
+                    height: ${randomSize}px;
+                    background: ${color};
+                    border-radius: 50%;
+                    top: ${randomY}px;
+                    left: ${randomX}px;
+                    opacity: 0;
+                    animation: professionalParticle 2s ease-out forwards;
+                    animation-delay: ${Math.random() * 0.5}s;
+                    pointer-events: none;
+                    box-shadow: 0 0 10px ${color};
+                `;
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2500);
+            }
         }
         
         function createScreenFlash(color) {
