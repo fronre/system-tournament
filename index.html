@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -103,24 +104,29 @@
 
         /* Main Layout */
         main {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 30px 20px;
+            padding: 40px 30px;
             display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 40px;
+            background: radial-gradient(circle at center, rgba(0, 255, 255, 0.05) 0%, transparent 70%);
         }
 
         /* Cards */
         .card {
             background: var(--bg-card);
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 35px;
             box-shadow: var(--shadow-card);
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.3);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
         }
 
         .card::before {
@@ -147,25 +153,27 @@
 
         .card h2 {
             color: var(--neon-cyan);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
             text-align: center;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         /* Players Section */
         .player-input {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         input[type="text"] {
             flex: 1;
-            padding: 12px;
+            padding: 15px;
             background: var(--bg-secondary);
             border: 2px solid rgba(0, 255, 255, 0.3);
-            border-radius: 8px;
+            border-radius: 12px;
             color: var(--text-primary);
             font-size: 16px;
             transition: all 0.3s ease;
@@ -178,16 +186,17 @@
         }
 
         button {
-            padding: 12px 20px;
+            padding: 15px 25px;
             background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             color: var(--text-primary);
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-size: 14px;
         }
 
         button:hover {
@@ -202,23 +211,27 @@
         .players-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            max-height: 300px;
+            gap: 12px;
+            max-height: 350px;
             overflow-y: auto;
             flex: 1;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
         }
 
         .player-chip {
             background: linear-gradient(45deg, var(--bg-secondary), var(--bg-card));
             border: 1px solid var(--neon-cyan);
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 8px 15px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             animation: fadeIn 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 2px 15px rgba(0, 255, 255, 0.3);
             font-size: 14px;
+            transition: all 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -256,10 +269,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
             flex: 1;
             justify-content: center;
-            min-height: 600px; /* Increased to fit larger wheel */
+            min-height: 650px;
+            padding: 20px;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.05) 0%, transparent 60%);
+            border-radius: 20px;
         }
 
         #wheelCanvas {
@@ -267,10 +283,10 @@
             border-radius: 50%;
             box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
             background: var(--bg-primary);
-            max-width: 500px;
-            max-height: 500px;
-            width: 500px;
-            height: 500px;
+            max-width: 480px;
+            max-height: 480px;
+            width: 480px;
+            height: 480px;
             position: relative;
             z-index: 100;
         }
@@ -370,20 +386,24 @@
         .matches-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-height: 350px;
+            gap: 15px;
+            max-height: 400px;
             overflow-y: auto;
             flex: 1;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
         }
 
         .match-card {
             background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
             border: 1px solid var(--neon-purple);
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 12px;
+            padding: 18px;
             text-align: center;
             animation: slideIn 0.5s ease;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 255, 0.2);
         }
 
         @keyframes slideIn {
@@ -604,8 +624,8 @@
         @media (max-width: 1200px) {
             main {
                 grid-template-columns: 1fr 1fr;
-                gap: 15px;
-                padding: 15px;
+                gap: 30px;
+                padding: 30px 20px;
             }
 
             .bracket-container {
@@ -618,14 +638,24 @@
         @media (max-width: 1024px) {
             main {
                 grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 15px;
+                gap: 25px;
+                padding: 25px 15px;
                 height: auto;
                 overflow-y: auto;
             }
 
             h1 {
                 font-size: 2rem;
+            }
+
+            .card {
+                padding: 30px;
+                min-height: 350px;
+            }
+
+            #wheelCanvas {
+                width: 400px !important;
+                height: 400px !important;
             }
 
             .bracket-container {
@@ -644,29 +674,29 @@
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 10px;
+                gap: 15px;
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
 
             .card {
-                padding: 15px;
-                min-height: 300px;
+                padding: 25px;
+                min-height: 320px;
             }
 
             #wheelCanvas {
-                width: 400px !important;
-                height: 400px !important;
+                width: 350px !important;
+                height: 350px !important;
             }
 
             .players-list {
-                max-height: 200px;
+                max-height: 250px;
             }
 
             .matches-list {
-                max-height: 300px;
+                max-height: 350px;
             }
 
             .bracket-container {
@@ -680,42 +710,43 @@
 
         @media (max-width: 480px) {
             header {
-                padding: 15px 10px;
+                padding: 20px 15px;
             }
 
             main {
-                padding: 10px;
+                padding: 15px 10px;
+                gap: 20px;
             }
 
             .card {
-                padding: 10px;
-                min-height: 250px;
+                padding: 20px;
+                min-height: 280px;
             }
 
             h1 {
-                font-size: 1.2rem;
+                font-size: 1.4rem;
             }
 
             h2 {
-                font-size: 1rem;
+                font-size: 1.2rem;
             }
 
             #wheelCanvas {
-                width: 320px !important;
-                height: 320px !important;
+                width: 300px !important;
+                height: 300px !important;
             }
 
             .spin-button {
-                padding: 10px 20px;
-                font-size: 14px;
+                padding: 12px 25px;
+                font-size: 16px;
             }
 
             .tournament-bracket {
-                padding: 15px;
+                padding: 20px;
             }
 
             .bracket-container {
-                padding: 10px 0;
+                padding: 15px 0;
             }
         }
 
@@ -732,6 +763,59 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* New Selection Animations */
+        @keyframes selectionPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes particleFly {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -927,7 +1011,7 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = 220; // Large and beautiful
+            const radius = 200; // Optimized for better visibility
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -958,10 +1042,27 @@
                 ctx.save();
                 ctx.translate(centerX, centerY);
                 ctx.rotate(startAngle + anglePerPlayer / 2);
+                // Enhanced text rendering with better font
                 ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 16px Arial';
+                ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetX = 1;
+                ctx.shadowOffsetY = 1;
+                
+                // Draw text with outline for better readability
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.9)';
+                ctx.lineWidth = 3;
+                ctx.strokeText(player.name, radius / 2, 0);
                 ctx.fillText(player.name, radius / 2, 0);
+                
+                // Reset shadow
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
                 ctx.restore();
             });
             
@@ -1123,30 +1224,89 @@
         }
 
         function showSelectionHighlight(player, index) {
-            // Create a big highlight effect
+            // Create an amazing selection highlight with multiple effects
             const highlight = document.createElement('div');
             highlight.style.cssText = `
                 position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                font-size: 4rem;
-                font-weight: bold;
+                font-size: 5rem;
+                font-weight: 900;
                 color: ${player.color};
-                text-shadow: 0 0 50px ${player.color};
+                text-shadow: 
+                    0 0 30px ${player.color},
+                    0 0 60px ${player.color},
+                    0 0 90px ${player.color},
+                    0 0 120px ${player.color},
+                    0 0 150px ${player.color};
                 z-index: 3000;
-                animation: selectionPulse 1s ease-out forwards;
+                animation: selectionPulse 1.5s ease-out forwards;
                 pointer-events: none;
                 text-align: center;
+                font-family: "Segoe UI", Arial, sans-serif;
             `;
             highlight.innerHTML = `
-                <div>🎯</div>
-                <div style="font-size: 3rem; margin-top: 20px;">${player.name}</div>
-                <div style="font-size: 1.5rem; margin-top: 10px;">تم اختياره!</div>
+                <div style="animation: bounceIn 0.8s ease-out">🎯</div>
+                <div style="font-size: 4rem; margin-top: 30px; animation: slideInUp 0.8s ease-out 0.2s both; text-shadow: 0 0 40px ${player.color};">${player.name}</div>
+                <div style="font-size: 2rem; margin-top: 20px; animation: slideInUp 0.8s ease-out 0.4s both; color: #FFD700;">✨ تم اختياره! ✨</div>
+                <div style="font-size: 1.5rem; margin-top: 15px; animation: slideInUp 0.8s ease-out 0.6s both; color: #fff;">🏆 لاعب محظوظ 🏆</div>
             `;
             document.body.appendChild(highlight);
             
-            setTimeout(() => highlight.remove(), 1000);
+            // Add particle effects
+            createParticleEffect(highlight);
+            
+            setTimeout(() => highlight.remove(), 2000);
+        }
+        
+        function createParticleEffect(container) {
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                const randomX = Math.random() * 400 - 200;
+                const randomY = Math.random() * 400 - 200;
+                const randomColor = getRandomColor();
+                
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${randomColor};
+                    border-radius: 50%;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    animation: particleFly 1.5s ease-out forwards;
+                    animation-delay: ${i * 0.05}s;
+                    pointer-events: none;
+                    box-shadow: 0 0 10px ${randomColor};
+                `;
+                
+                // Create custom animation for each particle
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = `
+                    @keyframes particleFly${i} {
+                        0% {
+                            transform: translate(-50%, -50%) scale(0);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px)) scale(1);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(styleSheet);
+                particle.style.animation = `particleFly${i} 1.5s ease-out forwards`;
+                particle.style.animationDelay = `${i * 0.05}s`;
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                    styleSheet.remove();
+                }, 2000);
+            }
         }
 
         function createMatchFromSelected() {
