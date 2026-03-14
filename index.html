@@ -1,14 +1,13 @@
-
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بطولة 2 ضد 2 - نظام القرعة الاحترافي</title>
+    <title>بطولة 2 ضد 2</title>
     
     <!-- Professional Gaming Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Cairo:wght@600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -33,7 +32,7 @@
             --shadow-neon: 0 0 20px rgba(0, 255, 255, 0.5);
             --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
             --font-primary: 'Orbitron', 'Segoe UI', monospace;
-            --font-secondary: 'Rajdhani', 'Segoe UI', sans-serif;
+            --font-secondary: 'Tajawal', 'Cairo', sans-serif;
         }
 
         body {
@@ -400,7 +399,7 @@
             100% { filter: drop-shadow(0 0 50px #FFD700); }
         }
 
-        .spin-button {
+        .spin-button { font-size: 18px !important; padding: 16px 40px !important; margin-top: 20px !important; background: linear-gradient(135deg, #00ff88, #00ffff) !important; border: 3px solid #00ffff !important; box-shadow: 0 0 30px rgba(0, 255, 255, 0.8) !important; display: block !important;
             background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
             padding: 16px 40px;
             font-family: var(--font-primary);
@@ -818,7 +817,7 @@
                 height: 250px !important;
             }
 
-            .spin-button {
+            .spin-button { font-size: 18px !important; padding: 16px 40px !important; margin-top: 20px !important; background: linear-gradient(135deg, #00ff88, #00ffff) !important; border: 3px solid #00ffff !important; box-shadow: 0 0 30px rgba(0, 255, 255, 0.8) !important; display: block !important;
                 padding: 12px 20px;
                 font-size: 14px;
             }
@@ -960,9 +959,9 @@
     <main>
         <!-- Players Section -->
         <section class="card">
-            <h2>قسم اللاعبين</h2>
+            <h2>إضافة اللاعبين</h2>
             <div class="player-input">
-                <input type="text" id="playerName" placeholder="أدخل اسم اللاعب" maxlength="20">
+                <input type="text" id="playerName" placeholder="اكتب اسم اللاعب هنا" maxlength="20">
                 <button onclick="addPlayer()">إضافة</button>
             </div>
             <div class="players-list" id="playersList"></div>
@@ -970,24 +969,24 @@
 
         <!-- Wheel Section -->
         <section class="card">
-            <h2>عجلة القرعة</h2>
+            <h2>عجلة الاختيار</h2>
             <div class="wheel-container">
                 <div class="wheel-pointer"></div>
                 <canvas id="wheelCanvas" width="500" height="500"></canvas>
-                <button class="spin-button" id="spinButton" onclick="spinWheel()">دور العجلة</button>
+                <button class="spin-button" id="spinButton" onclick="spinWheel()">🎡 تدوير العجلة</button>
             </div>
         </section>
 
         <!-- Matches Section -->
         <section class="card">
-            <h2>قسم المباريات</h2>
+            <h2>اللاعبون المختارون</h2>
             <div class="matches-list" id="matchesList"></div>
         </section>
     </main>
 
     <!-- Tournament Bracket -->
     <div class="tournament-bracket" id="tournamentBracket" style="display: none;">
-        <h2 class="bracket-title">🏆 شجرة البطولة 🏆</h2>
+        <h2 class="bracket-title">?? ???? ??????? ??</h2>
         <div class="bracket-container" id="bracketContainer"></div>
     </div>
 
@@ -1021,12 +1020,12 @@
             const name = input.value.trim();
             
             if (name === '') {
-                showMessage('الرجاء إدخال اسم اللاعب', 'error');
+                showMessage('الرجاء كتابة اسم اللاعب', 'error');
                 return;
             }
             
             if (players.some(p => p.name === name)) {
-                showMessage('اللاعب موجود بالفعل', 'error');
+                showMessage('هذا الاسم موجود بالفعل', 'error');
                 return;
             }
             
@@ -1085,30 +1084,30 @@
                 document.querySelector('main').appendChild(div);
             }
             
-            let progressHTML = `<h3 style="color: var(--neon-cyan); margin-bottom: 10px;">📊 تقدم البطولة</h3>`;
+            let progressHTML = `<h3 style="color: var(--neon-cyan); margin-bottom: 10px;">تقدم البطولة</h3>`;
             progressHTML += `<div style="display: flex; justify-content: space-around; margin-bottom: 10px;">`;
-            progressHTML += `<div>👥 الإجمالي: ${totalPlayers}</div>`;
-            progressHTML += `<div>🎯 متاحون: ${availableCount}</div>`;
-            progressHTML += `<div>✅ مختارون: ${selectedCount}</div>`;
+            progressHTML += `<div>إجمالي اللاعبين: ${totalPlayers}</div>`;
+            progressHTML += `<div>المتاحون: ${availableCount}</div>`;
+            progressHTML += `<div>المختارون: ${selectedCount}</div>`;
             progressHTML += `</div>`;
             
             // Check for tournament readiness
             if (totalPlayers >= 16) {
                 progressHTML += `<div style="color: var(--neon-green); font-weight: bold;">`;
                 if (totalPlayers === 16) {
-                    progressHTML += `🏆 جاهز لبطولة 16 لاعب (8 مباريات)`;
+                    progressHTML += `يمكن إنشاء بطولة 16 لاعب (8 مباريات)`;
                 } else if (totalPlayers === 32) {
-                    progressHTML += `🏆 جاهز لبطولة 32 لاعب (16 مباريات)`;
+                    progressHTML += `يمكن إنشاء بطولة 32 لاعب (16 مباراة)`;
                 } else {
-                    progressHTML += `🎯 ${totalPlayers} لاعب - يمكن بدء بطولة 16 لاعب`;
+                    progressHTML += `يوجد ${totalPlayers} لاعب - تحتاج 16 لاعب على الأقل`;
                 }
                 progressHTML += `</div>`;
                 
                 if (matches.length >= 4 && totalPlayers === 16) {
-                    progressHTML += `<button onclick="createTournamentBracket()" style="margin-top: 10px; background: var(--neon-green); color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">🚀 بدء البطولة</button>`;
+                    progressHTML += `<button onclick="createTournamentBracket()" style="margin-top: 10px; background: var(--neon-green); color: black; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">إنشاء البطولة</button>`;
                 }
             } else {
-                progressHTML += `<div style="color: var(--neon-pink);">⏳ تحتاج ${16 - totalPlayers} لاعبين إضافيين لبطولة 16 لاعب</div>`;
+                progressHTML += `<div style="color: var(--neon-pink);">تحتاج ${16 - totalPlayers} لاعبين إضافيين للوصول 16 لاعب</div>`;
             }
             
             document.getElementById('tournamentProgress').innerHTML = progressHTML;
@@ -1122,9 +1121,9 @@
                 const chip = document.createElement('div');
                 chip.className = 'player-chip';
                 chip.innerHTML = `
-                    <div style="color: ${player.color}; font-size: 16px;">●</div>
+                    <div style="color: ${player.color}; font-size: 16px;">?</div>
                     <div style="color: #ffffff; font-weight: 500; text-align: center; font-size: 11px;">${player.name}</div>
-                    <button class="remove-player" onclick="removePlayer(${player.id})">×</button>
+                    <button class="remove-player" onclick="removePlayer(${player.id})">�</button>
                 `;
                 container.appendChild(chip);
             });
@@ -1144,7 +1143,7 @@
                 ctx.fillStyle = '#666';
                 ctx.font = '20px Arial';
                 ctx.textAlign = 'center';
-                ctx.fillText('أضف لاعبين للبدء', centerX, centerY);
+                ctx.fillText('لا يوجد لاعبون متاحون', centerX, centerY);
                 return;
             }
             
@@ -1180,15 +1179,15 @@
                 // Draw text with strong outline for maximum readability
                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.95)';
                 ctx.lineWidth = 4;
-                ctx.strokeText(player.name, radius / 2, 0);
-                ctx.fillText(player.name, radius / 2, 0);
+                ctx.strokeText(player.name, radius / 2.2, 0);
+                ctx.fillText(player.name, radius / 2.2, 0);
                 
                 // Add glow effect for better visibility
                 ctx.shadowColor = player.color;
                 ctx.shadowBlur = 8;
                 ctx.strokeStyle = player.color;
                 ctx.lineWidth = 1;
-                ctx.strokeText(player.name, radius / 2, 0);
+                ctx.strokeText(player.name, radius / 2.2, 0);
                 
                 // Reset shadow
                 ctx.shadowColor = 'transparent';
@@ -1254,53 +1253,51 @@
         }
 
         function spinWheel() {
+            if (isSpinning || availablePlayers.length === 0) {
+                if (availablePlayers.length === 0) {
+                    showMessage('الرجاء إضافة لاعبين أولاً', 'error');
+                }
+                return;
+            }
 
-    if (isSpinning || availablePlayers.length === 0) return;
+            isSpinning = true;
+            const button = document.getElementById('spinButton');
+            button.disabled = true;
+            button.textContent = "جاري التدوير...";
+            button.style.background = "linear-gradient(135deg, #FFD700, #FFA500, #FF6347)";
 
-    isSpinning = true;
-    document.getElementById('spinButton').disabled = true;
+            document.querySelector('.wheel-container').classList.add('spinning');
 
-    document.querySelector('.wheel-container').classList.add('spinning');
+            const spinDuration = 5000;
+            const spins = 8 + Math.random() * 6;
+            const startRotation = currentRotation;
+            const targetRotation = startRotation + spins * 2 * Math.PI;
+            const startTime = performance.now();
 
-    const spinDuration = 5000; // Optimized duration
-    const spins = 8 + Math.random() * 6; // 8-14 rotations
+            function easeOutQuart(t) {
+                return 1 - Math.pow(1 - t, 4);
+            }
 
-    const startRotation = currentRotation;
-    const targetRotation = startRotation + spins * 2 * Math.PI;
+            function animate(time) {
+                const progress = Math.min((time - startTime) / spinDuration, 1);
+                const eased = easeOutQuart(progress);
+                currentRotation = startRotation + (targetRotation - startRotation) * eased;
+                drawWheel();
 
-    const startTime = performance.now();
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    isSpinning = false;
+                    document.querySelector('.wheel-container').classList.remove('spinning');
+                    button.disabled = false;
+                    button.textContent = "🎡 تدوير العجلة";
+                    button.style.background = "";
+                    selectWinner();
+                }
+            }
 
-    const button = document.getElementById('spinButton');
-    button.textContent = "🎡 SPINNING...";
-    button.style.background = "linear-gradient(135deg, #FFD700, #FFA500, #FF6347)";
-
-    // Professional easing function
-    function easeOutQuart(t) {
-        return 1 - Math.pow(1 - t, 4);
-    }
-
-    function animate(time) {
-        const progress = Math.min((time - startTime) / spinDuration, 1);
-        const eased = easeOutQuart(progress);
-
-        currentRotation = startRotation + (targetRotation - startRotation) * eased;
-
-        drawWheel();
-
-        if (progress < 1) {
             requestAnimationFrame(animate);
-        } else {
-            isSpinning = false;
-            document.querySelector('.wheel-container').classList.remove('spinning');
-            button.textContent = "SPIN WHEEL";
-            button.style.background = "";
-            document.getElementById('spinButton').disabled = false;
-            selectWinner();
         }
-    }
-
-    requestAnimationFrame(animate);
-}
 
         function selectWinner() {
             if (availablePlayers.length === 0) return;
@@ -1314,9 +1311,9 @@
             // Since the wheel rotates clockwise, and we want the segment at the top (angle 0)
             // We need to find which segment's center is closest to angle 0
             // Canvas coordinates: 0 angle is at 3 o'clock, but our pointer is at 12 o'clock (top)
-            // So we need to adjust by -π/2 (90 degrees) to align with our pointer
+            // So we need to adjust by -p/2 (90 degrees) to align with our pointer
             
-            // The segment at the top will be the one where its center angle is closest to -π/2
+            // The segment at the top will be the one where its center angle is closest to -p/2
             const topAngle = -Math.PI / 2; // Top position in canvas coordinates
             const adjustedTopAngle = (topAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI);
             
@@ -1335,7 +1332,7 @@
                 // Add visual effect for selected player
                 animateWinnerSelection(winner.name);
                 
-                showMessage(`🎯 تم اختيار ${winner.name}!`, 'success');
+                showMessage(`?? ?? ?????? ${winner.name}!`, 'success');
                 
                 // Check if we can create matches (every 4 players = 1 match)
                 if (selectedPlayers.length % 4 === 0 && selectedPlayers.length >= 4) {
@@ -1376,13 +1373,13 @@
             `;
             
             selectionCard.innerHTML = `
-                <div style="position: absolute; top: 20px; right: 20px; font-size: 3rem; animation: pulse 1s infinite;">🎯</div>
+                <div style="position: absolute; top: 20px; right: 20px; font-size: 3rem; animation: pulse 1s infinite;">??</div>
                 <div style="font-size: 4rem; font-weight: 900; color: ${player.color}; text-shadow: 0 0 30px ${player.color}; margin-bottom: 20px; animation: glowText 2s ease-in-out infinite alternate;">${player.name}</div>
                 <div style="font-size: 1.8rem; color: #FFD700; text-shadow: 0 0 20px #FFD700; margin-bottom: 15px; animation: slideInUp 0.8s ease-out 0.3s both;">SELECTED</div>
                 <div style="font-size: 1.2rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 3px; animation: slideInUp 0.8s ease-out 0.5s both;">Player Added to Tournament</div>
                 <div style="position: absolute; bottom: 20px; display: flex; gap: 20px; animation: slideInUp 0.8s ease-out 0.7s both;">
-                    <div style="width: 60px; height: 60px; background: ${player.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px ${player.color};">⚡</div>
-                    <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px #FFD700;">🏆</div>
+                    <div style="width: 60px; height: 60px; background: ${player.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px ${player.color};">?</div>
+                    <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFD700, #FFA500); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 0 20px #FFD700;">??</div>
                 </div>
             `;
             
@@ -1528,7 +1525,7 @@
             container.innerHTML = '';
             
             if (matches.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #666;">لا توجد مباريات بعد</div>';
+                container.innerHTML = '<div style="text-align: center; color: #666;">?? ???? ??????? ???</div>';
                 return;
             }
             
@@ -1538,25 +1535,25 @@
                 matchCard.style.animation = `slideIn 0.5s ease ${index * 0.1}s both`;
                 matchCard.innerHTML = `
                     <div class="match-header">
-                        <span>🏆 المباراة ${index + 1}</span>
-                        ${match.winner ? '<span class="winner-badge">✅ تم تحديد الفائز</span>' : '<span class="pending-badge">⏳ في انتظار الفائز</span>'}
+                        <span>?? ???????? ${index + 1}</span>
+                        ${match.winner ? '<span class="winner-badge">? ?? ????? ??????</span>' : '<span class="pending-badge">? ?? ?????? ??????</span>'}
                     </div>
                     <div class="teams">
                         <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
                             <div class="team-header">
-                                <span class="team-color" style="color: ${match.team1[0].color}">●</span>
-                                الفريق 1
+                                <span class="team-color" style="color: ${match.team1[0].color}">?</span>
+                                ?????? 1
                             </div>
                             <div class="team-players">
                                 <div>${match.team1[0].name}</div>
                                 <div>${match.team1[1].name}</div>
                             </div>
                         </div>
-                        <div class="vs">⚔️</div>
+                        <div class="vs">??</div>
                         <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
                             <div class="team-header">
-                                <span class="team-color" style="color: ${match.team2[0].color}">●</span>
-                                الفريق 2
+                                <span class="team-color" style="color: ${match.team2[0].color}">?</span>
+                                ?????? 2
                             </div>
                             <div class="team-players">
                                 <div>${match.team2[0].name}</div>
@@ -1566,7 +1563,7 @@
                     </div>
                     ${match.winner ? `
                         <div class="match-winner">
-                            🏆 الفائز: ${match.winner[0].name} + ${match.winner[1].name}
+                            ?? ??????: ${match.winner[0].name} + ${match.winner[1].name}
                         </div>
                     ` : ''}
                 `;
@@ -1589,29 +1586,29 @@
             // Quarter Finals
             const quarterFinals = document.createElement('div');
             quarterFinals.className = 'bracket-round';
-            quarterFinals.innerHTML = `<h3 class="round-title">الدور الأول (${quarterFinalMatches} مباريات)</h3>`;
+            quarterFinals.innerHTML = `<h3 class="round-title">????? ????? (${quarterFinalMatches} ???????)</h3>`;
             
             for (let i = 0; i < Math.min(matches.length, quarterFinalMatches); i++) {
                 const matchDiv = document.createElement('div');
                 matchDiv.className = 'bracket-match';
                 matchDiv.innerHTML = `
-                    <div class="match-header">المباراة ${i + 1}</div>
+                    <div class="match-header">???????? ${i + 1}</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${matches[i].team1[0].color}">●</span>
+                            <span class="team-color" style="color: ${matches[i].team1[0].color}">?</span>
                             ${matches[i].team1[0].name} + ${matches[i].team1[1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${matches[i].team2[0].color}">●</span>
+                            <span class="team-color" style="color: ${matches[i].team2[0].color}">?</span>
                             ${matches[i].team2[0].name} + ${matches[i].team2[1].name}
                         </div>
                     </div>
                     <button class="winner-btn" onclick="setQuarterFinalWinner(${i}, 1)" style="background: ${matches[i].team1[0].color}">
-                        فريق 1 يفوز
+                        ???? 1 ????
                     </button>
                     <button class="winner-btn" onclick="setQuarterFinalWinner(${i}, 2)" style="background: ${matches[i].team2[0].color}">
-                        فريق 2 يفوز
+                        ???? 2 ????
                     </button>
                 `;
                 quarterFinals.appendChild(matchDiv);
@@ -1620,15 +1617,15 @@
             // Semi Finals
             const semiFinals = document.createElement('div');
             semiFinals.className = 'bracket-round';
-            semiFinals.innerHTML = `<h3 class="round-title">نصف النهائي (${semiFinalMatches} مباريات)</h3>`;
+            semiFinals.innerHTML = `<h3 class="round-title">??? ??????? (${semiFinalMatches} ???????)</h3>`;
             
             for (let i = 0; i < semiFinalMatches; i++) {
                 const matchDiv = document.createElement('div');
                 matchDiv.className = 'bracket-match semi-final-placeholder';
                 matchDiv.id = `semi-final-${i}`;
                 matchDiv.innerHTML = `
-                    <div class="match-header">نصف النهائي ${i + 1}</div>
-                    <div class="winner-placeholder">في انتظار الفائزين...</div>
+                    <div class="match-header">??? ??????? ${i + 1}</div>
+                    <div class="winner-placeholder">?? ?????? ????????...</div>
                 `;
                 semiFinals.appendChild(matchDiv);
             }
@@ -1636,14 +1633,14 @@
             // Final
             const final = document.createElement('div');
             final.className = 'bracket-round';
-            final.innerHTML = '<h3 class="round-title">النهائي</h3>';
+            final.innerHTML = '<h3 class="round-title">???????</h3>';
             
             const finalMatch = document.createElement('div');
             finalMatch.className = 'bracket-match final-placeholder';
             finalMatch.id = 'final-match';
             finalMatch.innerHTML = `
-                <div class="match-header">🏆 المباراة النهائية 🏆</div>
-                <div class="winner-placeholder">في انتظار الفائزين...</div>
+                <div class="match-header">?? ???????? ???????? ??</div>
+                <div class="winner-placeholder">?? ?????? ????????...</div>
             `;
             final.appendChild(finalMatch);
             
@@ -1651,7 +1648,7 @@
             container.appendChild(semiFinals);
             container.appendChild(final);
             
-            showMessage(`تم إنشاء شجرة بطولة ${is16PlayerTournament ? '16' : '32'} لاعب! اختر الفائزين في الدور الأول`, 'success');
+            showMessage(`?? ????? ???? ????? ${is16PlayerTournament ? '16' : '32'} ????! ???? ???????? ?? ????? ?????`, 'success');
         }
 
         // Utility Functions
@@ -1695,8 +1692,8 @@
             updateSemiFinals();
             
             // Animate winner
-            animateWinnerSelection(`فريق ${teamNumber} يفوز!`);
-            showMessage(`تم تحديد الفائز في المباراة ${matchIndex + 1}`, 'success');
+            animateWinnerSelection(`???? ${teamNumber} ????!`);
+            showMessage(`?? ????? ?????? ?? ???????? ${matchIndex + 1}`, 'success');
         }
 
         function updateSemiFinals() {
@@ -1704,46 +1701,46 @@
                 // Update semi final 1
                 const semi1 = document.getElementById('semi-final-0');
                 semi1.innerHTML = `
-                    <div class="match-header">نصف النهائي 1</div>
+                    <div class="match-header">??? ??????? 1</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[0][0].color}">●</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[0][0].color}">?</span>
                             ${tournamentWinners.quarterFinals[0][0].name} + ${tournamentWinners.quarterFinals[0][1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[1][0].color}">●</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[1][0].color}">?</span>
                             ${tournamentWinners.quarterFinals[1][0].name} + ${tournamentWinners.quarterFinals[1][1].name}
                         </div>
                     </div>
                     <button class="winner-btn" onclick="setSemiFinalWinner(0, 1)" style="background: ${tournamentWinners.quarterFinals[0][0].color}">
-                        فريق 1 يفوز
+                        ???? 1 ????
                     </button>
                     <button class="winner-btn" onclick="setSemiFinalWinner(0, 2)" style="background: ${tournamentWinners.quarterFinals[1][0].color}">
-                        فريق 2 يفوز
+                        ???? 2 ????
                     </button>
                 `;
                 
                 // Update semi final 2
                 const semi2 = document.getElementById('semi-final-1');
                 semi2.innerHTML = `
-                    <div class="match-header">نصف النهائي 2</div>
+                    <div class="match-header">??? ??????? 2</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[2][0].color}">●</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[2][0].color}">?</span>
                             ${tournamentWinners.quarterFinals[2][0].name} + ${tournamentWinners.quarterFinals[2][1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[3][0].color}">●</span>
+                            <span class="team-color" style="color: ${tournamentWinners.quarterFinals[3][0].color}">?</span>
                             ${tournamentWinners.quarterFinals[3][0].name} + ${tournamentWinners.quarterFinals[3][1].name}
                         </div>
                     </div>
                     <button class="winner-btn" onclick="setSemiFinalWinner(1, 1)" style="background: ${tournamentWinners.quarterFinals[2][0].color}">
-                        فريق 1 يفوز
+                        ???? 1 ????
                     </button>
                     <button class="winner-btn" onclick="setSemiFinalWinner(1, 2)" style="background: ${tournamentWinners.quarterFinals[3][0].color}">
-                        فريق 2 يفوز
+                        ???? 2 ????
                     </button>
                 `;
             }
@@ -1757,31 +1754,31 @@
             // Update final
             updateFinal();
             
-            animateWinnerSelection(`الفائز نصف النهائي ${semiIndex + 1}!`);
-            showMessage(`تم تحديد الفائز في نصف النهائي ${semiIndex + 1}`, 'success');
+            animateWinnerSelection(`?????? ??? ??????? ${semiIndex + 1}!`);
+            showMessage(`?? ????? ?????? ?? ??? ??????? ${semiIndex + 1}`, 'success');
         }
 
         function updateFinal() {
             if (tournamentWinners.semiFinals.length === 2) {
                 const final = document.getElementById('final-match');
                 final.innerHTML = `
-                    <div class="match-header">🏆 المباراة النهائية 🏆</div>
+                    <div class="match-header">?? ???????? ???????? ??</div>
                     <div class="match-teams">
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[0][0].color}">●</span>
+                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[0][0].color}">?</span>
                             ${tournamentWinners.semiFinals[0][0].name} + ${tournamentWinners.semiFinals[0][1].name}
                         </div>
                         <div class="bracket-vs">VS</div>
                         <div class="bracket-team">
-                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[1][0].color}">●</span>
+                            <span class="team-color" style="color: ${tournamentWinners.semiFinals[1][0].color}">?</span>
                             ${tournamentWinners.semiFinals[1][0].name} + ${tournamentWinners.semiFinals[1][1].name}
                         </div>
                     </div>
                     <button class="winner-btn champion-btn" onclick="setChampion(1)" style="background: ${tournamentWinners.semiFinals[0][0].color}">
-                        🏆 فريق 1 يفوز 🏆
+                        ?? ???? 1 ???? ??
                     </button>
                     <button class="winner-btn champion-btn" onclick="setChampion(2)" style="background: ${tournamentWinners.semiFinals[1][0].color}">
-                        🏆 فريق 2 يفوز 🏆
+                        ?? ???? 2 ???? ??
                     </button>
                 `;
             }
@@ -1793,7 +1790,7 @@
             
             // Show champion celebration
             showChampionCelebration(champion);
-            showMessage('🏆 تم تحديد بطل البطولة! 🏆', 'success');
+            showMessage('?? ?? ????? ??? ???????! ??', 'success');
         }
 
         function showChampionCelebration(champion) {
@@ -1814,12 +1811,12 @@
             
             celebration.innerHTML = `
                 <div style="text-align: center; animation: championBounce 1s ease infinite alternate;">
-                    <div style="font-size: 4rem; margin-bottom: 20px;">🏆</div>
+                    <div style="font-size: 4rem; margin-bottom: 20px;">??</div>
                     <h1 style="color: #FFD700; font-size: 3rem; text-shadow: 0 0 30px #FFD700; margin: 0;">
-                        البطل!
+                        ?????!
                     </h1>
                     <div style="color: #fff; font-size: 2rem; margin-top: 20px;">
-                        <span style="color: ${champion[0].color}">●</span>
+                        <span style="color: ${champion[0].color}">?</span>
                         ${champion[0].name} + ${champion[1].name}
                     </div>
                     <button onclick="this.parentElement.parentElement.remove()" style="
@@ -1833,7 +1830,7 @@
                         font-weight: bold;
                         cursor: pointer;
                     ">
-                        إغلاق
+                        ?????
                     </button>
                 </div>
             `;
@@ -1883,4 +1880,33 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
