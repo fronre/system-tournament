@@ -399,7 +399,7 @@
             100% { filter: drop-shadow(0 0 50px #FFD700); }
         }
 
-        .spin-button { font-size: 18px !important; padding: 16px 40px !important; margin-top: 20px !important; background: linear-gradient(135deg, #00ff88, #00ffff) !important; border: 3px solid #00ffff !important; box-shadow: 0 0 30px rgba(0, 255, 255, 0.8) !important; display: block !important;
+        .spin-button {
             background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
             padding: 16px 40px;
             font-family: var(--font-primary);
@@ -410,6 +410,9 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             border: 2px solid rgba(0, 255, 255, 0.3);
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .spin-button:hover:not(:disabled) {
