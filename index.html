@@ -923,13 +923,13 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = 180; // Increased from 120 to 180
+            const radius = 200; // Proper size for 500px canvas
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             if (availablePlayers.length === 0) {
                 ctx.fillStyle = '#666';
-                ctx.font = '20px Arial'; // Increased font size
+                ctx.font = '18px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('أضف لاعبين للبدء', centerX, centerY);
                 return;
@@ -956,57 +956,28 @@
                 ctx.rotate(startAngle + anglePerPlayer / 2);
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 16px Arial'; // Increased from 12px to 16px
+                ctx.font = 'bold 14px Arial';
                 ctx.fillText(player.name, radius / 2, 0);
                 ctx.restore();
             });
             
             // Draw center circle
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI); // Increased center circle radius
+            ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
             ctx.fillStyle = '#fff';
             ctx.fill();
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
             ctx.stroke();
             
-            // Draw beautiful selection indicator line at top (where pointer points)
+            // Draw simple selection indicator
             ctx.beginPath();
             ctx.moveTo(centerX, centerY - radius);
-            ctx.lineTo(centerX, centerY - radius - 25);
-            
-            // Create gradient for beautiful line
-            const gradient = ctx.createLinearGradient(centerX, centerY - radius, centerX, centerY - radius - 25);
-            gradient.addColorStop(0, '#FFD700');
-            gradient.addColorStop(0.5, '#FFA500');
-            gradient.addColorStop(1, '#FF6347');
-            
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 6;
+            ctx.lineTo(centerX, centerY - radius - 20);
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 4;
             ctx.lineCap = 'round';
-            ctx.shadowColor = '#FFD700';
-            ctx.shadowBlur = 10;
             ctx.stroke();
-            
-            // Add decorative dots
-            ctx.beginPath();
-            ctx.arc(centerX, centerY - radius - 30, 4, 0, 2 * Math.PI);
-            ctx.fillStyle = '#FFD700';
-            ctx.shadowColor = '#FFD700';
-            ctx.shadowBlur = 15;
-            ctx.fill();
-            
-            ctx.beginPath();
-            ctx.arc(centerX - 10, centerY - radius - 35, 3, 0, 2 * Math.PI);
-            ctx.fillStyle = '#FFA500';
-            ctx.shadowBlur = 10;
-            ctx.fill();
-            
-            ctx.beginPath();
-            ctx.arc(centerX + 10, centerY - radius - 35, 3, 0, 2 * Math.PI);
-            ctx.fillStyle = '#FF6347';
-            ctx.shadowBlur = 10;
-            ctx.fill();
             
             // Highlight the segment at the pointer position
             if (availablePlayers.length > 0) {
@@ -1015,7 +986,6 @@
                 const adjustedTopAngle = (topAngle - normalizedRotation + 2 * Math.PI) % (2 * Math.PI);
                 const topSegmentIndex = Math.floor(adjustedTopAngle / anglePerPlayer) % availablePlayers.length;
                 
-                // Highlight the selected segment
                 const startAngle = topSegmentIndex * anglePerPlayer + currentRotation;
                 const endAngle = startAngle + anglePerPlayer;
                 
