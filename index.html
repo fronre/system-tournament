@@ -923,13 +923,13 @@
             const ctx = canvas.getContext('2d');
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = 120;
+            const radius = 180; // Increased from 120 to 180
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             if (availablePlayers.length === 0) {
                 ctx.fillStyle = '#666';
-                ctx.font = '16px Arial';
+                ctx.font = '20px Arial'; // Increased font size
                 ctx.textAlign = 'center';
                 ctx.fillText('أضف لاعبين للبدء', centerX, centerY);
                 return;
@@ -956,11 +956,14 @@
                 ctx.rotate(startAngle + anglePerPlayer / 2);
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 12px Arial';
+                ctx.font = 'bold 16px Arial'; // Increased from 12px to 16px
                 ctx.fillText(player.name, radius / 2, 0);
                 ctx.restore();
             });
             
+            // Draw center circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI); // Increased center circle radius
             ctx.fillStyle = '#fff';
             ctx.fill();
             ctx.strokeStyle = '#000';
