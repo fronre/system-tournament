@@ -2,7 +2,7 @@
    api.js — All API calls to FastAPI backend
    ===================================================== */
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = ''; // Uses relative paths since FastAPI serves the frontend directly
 
 const API = {
     // ---- Players ----

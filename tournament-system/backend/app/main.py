@@ -24,12 +24,17 @@ def startup_event():
     create_tables()
 
 
-@app.get("/")
-def root():
-    return {"message": f"{APP_NAME} API is running!", "version": APP_VERSION}
+import os
+from fastapi.staticfiles import StaticFiles
+
 
 
 app.include_router(players.router, prefix="/players", tags=["Players"])
 app.include_router(teams.router, prefix="/teams", tags=["Teams"])
 app.include_router(matches.router, prefix="/matches", tags=["Matches"])
 app.include_router(tournaments.router, prefix="/tournament", tags=["Tournaments"])
+
+# Serve the frontend statically
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
